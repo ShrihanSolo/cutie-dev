@@ -10,13 +10,13 @@
   "clues": {
     "across": {
       "1": "Feline pet",
-      "3": "Canine pet",
+      "4": "Canine pet",
       "5": "Bed ____"
     },
     "down": {
       "1": "Opposite of out",
       "2": "Spanish word for gold",
-      "5": "Beats forever"
+      "3": "Beats forever"
     }
   }
 }
