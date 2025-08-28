@@ -833,16 +833,23 @@
     const fr = new FileReader();
     fr.onload = () => {
       try {
-        const json = JSON.parse(fr.result);
+        // Decode Base64 into JSON
+        const decoded = atob(fr.result.trim());
+        const json = JSON.parse(decoded);
+
         loadPuzzle(json);
         clearProgress();
         status(`Loaded puzzle from "${file.name}".`);
       } catch (e) {
-        setError('Invalid JSON file.');
+        console.error(e);
+        setError('Invalid encoded puzzle file.');
         status('');
       }
     };
-    fr.onerror = () => { setError('Failed to read file.'); status(''); };
+    fr.onerror = () => { 
+      setError('Failed to read file.'); 
+      status(''); 
+    };
     fr.readAsText(file);
   }
 
