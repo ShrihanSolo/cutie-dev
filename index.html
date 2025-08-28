@@ -821,7 +821,7 @@
       loadPuzzle(json);
       status(`Loaded puzzle for ${ymd}.`);
     } catch (e) {
-      setError(`Could not load ${url}. You can use "Load JSON file" to pick it locally.`);
+      setError(`Could not load the puzzle for ${ymd}. It may have nonstandard size or is not available yet.`);
       status('');
     }
   }
