@@ -1,0 +1,20 @@
+{
+  "date": "2025-08-30",
+  "grid": [
+    ["S","U","N",".","."],
+    ["O",".","I",".","."],
+    ["M","O","O","N","."],
+    [".",".",".",".","."],
+    [".",".",".",".","."]
+  ],
+  "clues": {
+    "across": {
+      "1": "Star at the center of our solar system",
+      "3": "Earth’s natural satellite"
+    },
+    "down": {
+      "1": "Word for being ‘owned by me’",
+      "2": "The opposite of off"
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "date": "2025-08-29",
+  "grid": [
+    ["H","O","P","E","."],
+    ["A",".","V",".","."],
+    ["T","I","M","E","."],
+    [".",".",".",".","."],
+    [".",".",".",".","."]
+  ],
+  "clues": {
+    "across": {
+      "1": "Feeling of optimism",
+      "3": "What the clock measures"
+    },
+    "down": {
+      "1": "Common greeting word (short)",
+      "2": "Vehicle (abbr.)"
+    }
+  }
+}
