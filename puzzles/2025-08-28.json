@@ -1,20 +1,22 @@
 {
   "date": "2025-08-28",
   "grid": [
-    ["C","A","T",".","."],
-    ["O",".","R",".","."],
-    ["D","O","G",".","."],
-    [".",".",".",".","."],
-    [".",".",".",".","."]
+    ["C","A","T","C","H"],
+    ["O",".","R",".","E"],
+    ["D","O","G",".","A"],
+    [".",".",".",".","R"],
+    ["S","H","E","E","T"]
   ],
   "clues": {
     "across": {
       "1": "Feline pet",
-      "3": "Canine pet"
+      "3": "Canine pet",
+      "5": "Bed ____"
     },
     "down": {
       "1": "Opposite of out",
-      "2": "Spanish word for gold"
+      "2": "Spanish word for gold",
+      "5": "Beats forever"
     }
   }
 }
