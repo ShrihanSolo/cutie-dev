@@ -4,6 +4,9 @@
   <meta charset="utf-8" />
   <title>The Cutie: Your Daily 5x5</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
   <style>
     /* ========== Base Layout & Theme ========== */
     :root {
@@ -36,10 +39,15 @@
       .controls { grid-auto-flow: column; align-items: center; justify-content: start; }
     }
 
+    .pacifico-regular {
+      font-family: "Pacifico", cursive;
+      font-weight: 400;
+      font-style: normal;
+    }
     .title-line { display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; }
-    .title-line h1 { font-size:48px; margin:0; }
-    .title-line .date { color:var(--muted); font-size:14px; }
-    .title-line .timer { color:var(--muted); font-size:14px; margin-left:10px; }
+    .title-line h1 { font-family:'Pacifico', cursive; font-size:48px; margin:0; }
+    .title-line .date { color:var(--muted); font-size:14px; margin-left:10px; margin-right:10px; }
+    .title-line .timer { color:var(--muted); font-size:24px; font-weight:bold; margin-left:10px; }
 
     .btn, button, input[type="date"], input[type="file"]::file-selector-button {
       border: 1px solid #c3c4ff;
