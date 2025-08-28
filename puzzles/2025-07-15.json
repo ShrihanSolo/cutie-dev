@@ -1,0 +1,56 @@
+{
+  "date": "2025-07-15",
+  "grid": [
+    [
+      ".",
+      "I",
+      "F",
+      "F",
+      "Y"
+    ],
+    [
+      ".",
+      "G",
+      "L",
+      "U",
+      "E"
+    ],
+    [
+      "F",
+      "L",
+      "I",
+      "N",
+      "T"
+    ],
+    [
+      "L",
+      "O",
+      "N",
+      "G",
+      "."
+    ],
+    [
+      "Y",
+      "O",
+      "G",
+      "I",
+      "."
+    ]
+  ],
+  "clues": {
+    "across": {
+      "1": "Doubtful",
+      "5": "Neanderthals made the first one from birch bark tar approximately 200,000 years ago",
+      "6": "Fire-starting rock",
+      "7": "Word that can fill the blanks of \"So ___!\" and \"Go ___!\"",
+      "8": "Meditation practitioner"
+    },
+    "down": {
+      "1": "Brand of cooler",
+      "2": "Short-lived relationship",
+      "3": "Mushrooms and such",
+      "4": "\"Even so ...\"",
+      "6": "Outer layer of a tent"
+    }
+  }
+}

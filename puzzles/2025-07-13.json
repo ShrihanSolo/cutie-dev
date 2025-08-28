@@ -1,0 +1,56 @@
+{
+  "date": "2025-07-13",
+  "grid": [
+    [
+      ".",
+      "A",
+      "P",
+      "E",
+      "."
+    ],
+    [
+      "C",
+      "R",
+      "A",
+      "N",
+      "E"
+    ],
+    [
+      "O",
+      "R",
+      "D",
+      "E",
+      "R"
+    ],
+    [
+      "M",
+      "A",
+      "M",
+      "M",
+      "A"
+    ],
+    [
+      ".",
+      "Y",
+      "A",
+      "Y",
+      "."
+    ]
+  ],
+  "clues": {
+    "across": {
+      "1": "Gibbon or gorilla",
+      "4": "Bird whose name is an excellent starting guess in Wordle, according to WordleBot",
+      "6": "Cry from a judge",
+      "7": "Family nickname that would make a terrible starting guess in Wordle",
+      "8": "\"Hooray!\""
+    },
+    "down": {
+      "1": "Widespread display",
+      "2": "Lakshmi who was a longtime host of \"Top Chef\"",
+      "3": "\"Don't let perfect be the ___ of good\" (aphorism)",
+      "4": "URL ending",
+      "5": "Historical period"
+    }
+  }
+}

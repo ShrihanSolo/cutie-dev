@@ -1,0 +1,56 @@
+{
+  "date": "2025-08-15",
+  "grid": [
+    [
+      "R",
+      "S",
+      "V",
+      "P",
+      "."
+    ],
+    [
+      "B",
+      "O",
+      "I",
+      "L",
+      "."
+    ],
+    [
+      "S",
+      "U",
+      "G",
+      "A",
+      "R"
+    ],
+    [
+      ".",
+      "P",
+      "I",
+      "N",
+      "E"
+    ],
+    [
+      ".",
+      "S",
+      "L",
+      "E",
+      "D"
+    ]
+  ],
+  "clues": {
+    "across": {
+      "1": "Answer to a party invitation",
+      "5": "Bring to a bubble",
+      "6": "With 8-Across, tree that produces nearly two-foot-long cones",
+      "8": "See 6-Across",
+      "9": "Enjoy a hill in chilly weather, say"
+    },
+    "down": {
+      "1": "N.F.L. ball carriers, for short",
+      "2": "Campbell's products",
+      "3": "Candlelight ___",
+      "4": "It travels the high way",
+      "7": "Like the maple leaf on Canada's flag"
+    }
+  }
+}

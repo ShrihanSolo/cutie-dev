@@ -1,0 +1,56 @@
+{
+  "date": "2025-07-22",
+  "grid": [
+    [
+      ".",
+      "P",
+      "A",
+      "C",
+      "K"
+    ],
+    [
+      "D",
+      "I",
+      "Z",
+      "Z",
+      "Y"
+    ],
+    [
+      "E",
+      "Q",
+      "U",
+      "A",
+      "L"
+    ],
+    [
+      "B",
+      "U",
+      "R",
+      "R",
+      "O"
+    ],
+    [
+      "T",
+      "E",
+      "E",
+      "S",
+      "."
+    ]
+  ],
+  "clues": {
+    "across": {
+      "1": "Get ready for a vacation",
+      "5": "How you might feel after riding a roller coaster",
+      "6": "\"All things being ___ ...\"",
+      "7": "Small donkey of the Southwest",
+      "8": "Items shot from cannons at basketball games"
+    },
+    "down": {
+      "1": "Spark, as curiosity",
+      "2": "Sky-blue hue",
+      "3": "Government policy leaders",
+      "4": "___ Ren, villain in the \"Star Wars\" universe",
+      "5": "What an i.o.u. represents"
+    }
+  }
+}

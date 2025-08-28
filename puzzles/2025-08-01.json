@@ -1,0 +1,56 @@
+{
+  "date": "2025-08-01",
+  "grid": [
+    [
+      ".",
+      ".",
+      "H",
+      "U",
+      "G"
+    ],
+    [
+      ".",
+      "P",
+      "U",
+      "R",
+      "E"
+    ],
+    [
+      "T",
+      "A",
+      "N",
+      "G",
+      "O"
+    ],
+    [
+      "A",
+      "C",
+      "T",
+      "E",
+      "D"
+    ],
+    [
+      "J",
+      "E",
+      "S",
+      "S",
+      "E"
+    ]
+  ],
+  "clues": {
+    "across": {
+      "1": "Arm-y greeting",
+      "4": "Undiluted ... or a country with its vowels swapped",
+      "5": "Ballroom dance ... or a country with its vowels swapped",
+      "6": "Played a role",
+      "7": "Eisenberg of \"The Social Network\""
+    },
+    "down": {
+      "1": "Ketchup brand",
+      "2": "Eggs on",
+      "3": "Crystal-lined rock",
+      "4": "Marathoner's concern",
+      "5": "___ Mahal"
+    }
+  }
+}

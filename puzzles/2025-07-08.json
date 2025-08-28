@@ -1,0 +1,56 @@
+{
+  "date": "2025-07-08",
+  "grid": [
+    [
+      "D",
+      "E",
+      "C",
+      "A",
+      "Y"
+    ],
+    [
+      "E",
+      "L",
+      "O",
+      "P",
+      "E"
+    ],
+    [
+      "B",
+      "I",
+      "B",
+      "L",
+      "E"
+    ],
+    [
+      "T",
+      "O",
+      "R",
+      "U",
+      "S"
+    ],
+    [
+      "S",
+      "T",
+      "A",
+      "S",
+      "H"
+    ]
+  ],
+  "clues": {
+    "across": {
+      "1": "Concern for dentists and nuclear physicists",
+      "6": "Get married in a hurry",
+      "7": "The world's all-time best-selling book",
+      "8": "Doughnut's shape, mathematically",
+      "9": "Secret collection"
+    },
+    "down": {
+      "1": "\"A Lannister always pays his ___\" (oft-quoted \"Game of Thrones\" line)",
+      "2": "Poet T.S. ___",
+      "3": "Hisser with a hood",
+      "4": "Best-possible test grade",
+      "5": "\"Oof, that makes me cringe!\""
+    }
+  }
+}

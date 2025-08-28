@@ -1,0 +1,58 @@
+{
+  "date": "2025-07-18",
+  "grid": [
+    [
+      "H",
+      "A",
+      "L",
+      "F",
+      "."
+    ],
+    [
+      "E",
+      "M",
+      "I",
+      "L",
+      "E"
+    ],
+    [
+      "M",
+      "O",
+      ".",
+      "O",
+      "N"
+    ],
+    [
+      "I",
+      "N",
+      "F",
+      "U",
+      "N"
+    ],
+    [
+      ".",
+      "G",
+      "E",
+      "R",
+      "E"
+    ]
+  ],
+  "clues": {
+    "across": {
+      "1": "Appropriate word that can precede 7-/8-Across and 3-/10-Down",
+      "5": "Remy's brother in \"Ratatouille\"",
+      "7": "Missouri's postal abbreviation",
+      "8": "Light switch position",
+      "9": "Done for laughs",
+      "11": "Richard of \"Pretty Woman\""
+    },
+    "down": {
+      "1": "Prefix that means 1-Across",
+      "2": "In the midst of",
+      "3": "Super Bowl that featured a 28-3 comeback win by the Patriots",
+      "4": "Baker's powder",
+      "6": "Dated feminine suffix",
+      "10": "Iron, on the periodic table"
+    }
+  }
+}

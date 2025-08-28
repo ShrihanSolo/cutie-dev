@@ -1,0 +1,56 @@
+{
+  "date": "2025-07-29",
+  "grid": [
+    [
+      ".",
+      "C",
+      "O",
+      "L",
+      "E"
+    ],
+    [
+      "S",
+      "H",
+      "R",
+      "E",
+      "D"
+    ],
+    [
+      "N",
+      "U",
+      "D",
+      "G",
+      "E"
+    ],
+    [
+      "A",
+      "T",
+      "E",
+      "I",
+      "N"
+    ],
+    [
+      "P",
+      "E",
+      "R",
+      "T",
+      "."
+    ]
+  ],
+  "clues": {
+    "across": {
+      "1": "___ Escola, Tony-winning portrayer of Mary Todd Lincoln in \"Oh, Mary!\"",
+      "5": "Tear to pieces, as documents or cheese",
+      "6": "Gentle prod",
+      "7": "Enjoyed a home-cooked meal",
+      "8": "Sassy"
+    },
+    "down": {
+      "1": "Ladder's counterpart",
+      "2": "Something taken by a server",
+      "3": "The real deal",
+      "4": "The garden in \"The Garden of Earthly Delights\"",
+      "5": "\"___ out of it!\" (\"Wake up!\")"
+    }
+  }
+}

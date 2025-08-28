@@ -1,0 +1,56 @@
+{
+  "date": "2025-08-07",
+  "grid": [
+    [
+      "B",
+      "O",
+      "N",
+      "E",
+      "S"
+    ],
+    [
+      "E",
+      "M",
+      "O",
+      "J",
+      "I"
+    ],
+    [
+      "E",
+      "A",
+      "S",
+      "E",
+      "L"
+    ],
+    [
+      "C",
+      "H",
+      "E",
+      "C",
+      "K"
+    ],
+    [
+      "H",
+      "A",
+      "S",
+      "T",
+      "Y"
+    ]
+  ],
+  "clues": {
+    "across": {
+      "1": "Parts of a museum dinosaur exhibit",
+      "6": "Smiling Face with Sunglasses, for one",
+      "7": "Painter's stand",
+      "8": "Restaurant item often asked for by signing the air",
+      "9": "Overly slapdash"
+    },
+    "down": {
+      "1": "Tree with smooth gray bark",
+      "2": "Nebraska city that's home to Union Pacific headquarters",
+      "3": "Features of bloodhounds that are said to be 1,000 times stronger than humans",
+      "4": "Boot from a game",
+      "5": "___ smooth"
+    }
+  }
+}

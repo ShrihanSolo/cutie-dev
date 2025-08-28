@@ -1,0 +1,56 @@
+{
+  "date": "2025-07-09",
+  "grid": [
+    [
+      "E",
+      "B",
+      "B",
+      "S",
+      "."
+    ],
+    [
+      "L",
+      "U",
+      "L",
+      "U",
+      "."
+    ],
+    [
+      "F",
+      "R",
+      "O",
+      "S",
+      "T"
+    ],
+    [
+      ".",
+      "N",
+      "O",
+      "H",
+      "O"
+    ],
+    [
+      ".",
+      "S",
+      "P",
+      "I",
+      "N"
+    ]
+  ],
+  "clues": {
+    "across": {
+      "1": "Subsides like the tide",
+      "5": "Leggings lead-in to \"lemon\"",
+      "6": "Poet Robert with a \"cool\" last name",
+      "8": "Manhattan neighborhood near the East Village",
+      "9": "Quick joyride"
+    },
+    "down": {
+      "1": "Fairylike figure of folklore",
+      "2": "Poet Robert with a \"hot\" last name",
+      "3": "Weakly hit fly ball",
+      "4": "Food made using a bamboo mat known as a \"makisu\"",
+      "7": "Quite the heavy weight"
+    }
+  }
+}

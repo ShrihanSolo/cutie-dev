@@ -1,0 +1,56 @@
+{
+  "date": "2025-07-31",
+  "grid": [
+    [
+      ".",
+      "J",
+      "A",
+      "B",
+      "S"
+    ],
+    [
+      "Z",
+      "E",
+      "B",
+      "R",
+      "A"
+    ],
+    [
+      "E",
+      "L",
+      "B",
+      "O",
+      "W"
+    ],
+    [
+      "S",
+      "L",
+      "O",
+      "W",
+      "S"
+    ],
+    [
+      "T",
+      "O",
+      "T",
+      "S",
+      "."
+    ]
+  ],
+  "clues": {
+    "across": {
+      "1": "Quick punches",
+      "5": "Animal with unique stripes, similar to human fingerprints",
+      "6": "The People's ___ (The Rock's signature wrestling move)",
+      "7": "Pumps the brakes, say",
+      "8": "Many \"Bluey\" viewers"
+    },
+    "down": {
+      "1": "Treat once advertised as \"America's Most Famous Dessert\"",
+      "2": "Head of a monastery",
+      "3": "Furrowed facial features",
+      "4": "Lumber mill tools",
+      "5": "Grated citrus peel"
+    }
+  }
+}

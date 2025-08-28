@@ -1,0 +1,56 @@
+{
+  "date": "2025-08-24",
+  "grid": [
+    [
+      "S",
+      "H",
+      "E",
+      "L",
+      "F"
+    ],
+    [
+      "C",
+      "A",
+      "R",
+      "O",
+      "L"
+    ],
+    [
+      "A",
+      "G",
+      "A",
+      "V",
+      "E"
+    ],
+    [
+      "R",
+      "U",
+      "S",
+      "E",
+      "S"
+    ],
+    [
+      "Y",
+      "E",
+      "E",
+      "S",
+      "H"
+    ]
+  ],
+  "clues": {
+    "across": {
+      "1": "Perch for a family photo",
+      "6": "Burnett with a variety show from 1967 to 1978",
+      "7": "Plant that yields mezcal",
+      "8": "Deceptive ploys",
+      "9": "\"You've gotta be kidding me!\""
+    },
+    "down": {
+      "1": "How a leap of faith might feel",
+      "2": "Dutch seat of government, with \"The\"",
+      "3": "What many pencils can do that magic markers can't",
+      "4": "Holds dear",
+      "5": "_ and blood (kin)"
+    }
+  }
+}

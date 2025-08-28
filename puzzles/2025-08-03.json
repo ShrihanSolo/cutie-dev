@@ -1,0 +1,56 @@
+{
+  "date": "2025-08-03",
+  "grid": [
+    [
+      ".",
+      "W",
+      "I",
+      "N",
+      "E"
+    ],
+    [
+      "T",
+      "O",
+      "N",
+      "E",
+      "R"
+    ],
+    [
+      "O",
+      "R",
+      "D",
+      "E",
+      "R"
+    ],
+    [
+      "U",
+      "S",
+      "E",
+      "D",
+      "."
+    ],
+    [
+      "R",
+      "E",
+      "X",
+      ".",
+      "."
+    ]
+  ],
+  "clues": {
+    "across": {
+      "1": "With 5-Down, road trip with frequent stops for reds",
+      "5": "Printer supply",
+      "6": "Use DoorDash or Grubhub",
+      "7": "Like thrift shop items",
+      "8": "Distortus ___, mutant dinosaur in \"Jurassic World Rebirth\""
+    },
+    "down": {
+      "1": "Not as good",
+      "2": "End-of-book reference",
+      "3": "Have to have",
+      "4": "Go wrong",
+      "5": "See 1-Across"
+    }
+  }
+}

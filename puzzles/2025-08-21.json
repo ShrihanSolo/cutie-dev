@@ -1,0 +1,56 @@
+{
+  "date": "2025-08-21",
+  "grid": [
+    [
+      "F",
+      "A",
+      "Q",
+      "S",
+      "."
+    ],
+    [
+      "I",
+      "R",
+      "A",
+      "Q",
+      "."
+    ],
+    [
+      "L",
+      "O",
+      "T",
+      "U",
+      "S"
+    ],
+    [
+      "E",
+      "M",
+      "A",
+      "I",
+      "L"
+    ],
+    [
+      "T",
+      "A",
+      "R",
+      "D",
+      "Y"
+    ]
+  ],
+  "clues": {
+    "across": {
+      "1": "Common queries, informally",
+      "5": "Only four-letter country with a \"Q\" in its name",
+      "6": "TV's \"The White ___\"",
+      "8": "Something you might \"Mark as read\"",
+      "9": "Late"
+    },
+    "down": {
+      "1": "___ mignon",
+      "2": "Burnt toast has a strong one",
+      "3": "Only five-letter country with a \"Q\" in its name",
+      "4": "Likely inspiration for the mythical kraken",
+      "7": "Sneaky"
+    }
+  }
+}

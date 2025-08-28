@@ -1,0 +1,56 @@
+{
+  "date": "2025-07-16",
+  "grid": [
+    [
+      ".",
+      "C",
+      "C",
+      "S",
+      "."
+    ],
+    [
+      "B",
+      "E",
+      "L",
+      "T",
+      "S"
+    ],
+    [
+      "A",
+      "D",
+      "O",
+      "R",
+      "E"
+    ],
+    [
+      "M",
+      "A",
+      "N",
+      "I",
+      "A"
+    ],
+    [
+      ".",
+      "R",
+      "E",
+      "P",
+      "."
+    ]
+  ],
+  "clues": {
+    "across": {
+      "1": "Keeps in the loop, in a way",
+      "4": "They're kept in the loop",
+      "6": "Love to pieces",
+      "7": "Craze",
+      "8": "Single weightlifting unit"
+    },
+    "down": {
+      "1": "Type of wood in Horace Slughorn's wand in the Harry Potter books",
+      "2": "What might have you seeing double?",
+      "3": "Cartoonist's creation",
+      "4": "\"Ka-POW!\"",
+      "5": "The Caribbean, e.g."
+    }
+  }
+}

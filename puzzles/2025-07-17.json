@@ -1,0 +1,56 @@
+{
+  "date": "2025-07-17",
+  "grid": [
+    [
+      ".",
+      "G",
+      "Y",
+      "M",
+      "S"
+    ],
+    [
+      ".",
+      "L",
+      "E",
+      "A",
+      "K"
+    ],
+    [
+      "J",
+      "O",
+      "L",
+      "L",
+      "Y"
+    ],
+    [
+      "A",
+      "B",
+      "L",
+      "E",
+      "."
+    ],
+    [
+      "M",
+      "E",
+      "S",
+      "S",
+      "."
+    ]
+  ],
+  "clues": {
+    "across": {
+      "1": "Workout facilities",
+      "5": "Pipe dream? Just the opposite!",
+      "6": "In good spirits",
+      "7": "Up to the task",
+      "8": "Headache-inducing situation"
+    },
+    "down": {
+      "1": "Boston newspaper",
+      "2": "TALKS LIKE THIS",
+      "3": "Mallard ducks with green heads, e.g.",
+      "4": "Drone's zone",
+      "6": "Rock out"
+    }
+  }
+}

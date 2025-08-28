@@ -1,0 +1,56 @@
+{
+  "date": "2025-08-25",
+  "grid": [
+    [
+      "T",
+      "A",
+      "T",
+      "A",
+      "."
+    ],
+    [
+      "S",
+      "W",
+      "I",
+      "G",
+      "."
+    ],
+    [
+      "P",
+      "A",
+      "R",
+      "I",
+      "S"
+    ],
+    [
+      ".",
+      "K",
+      "E",
+      "N",
+      "T"
+    ],
+    [
+      ".",
+      "E",
+      "D",
+      "G",
+      "Y"
+    ]
+  ],
+  "clues": {
+    "across": {
+      "1": "British \"bye-bye\"",
+      "5": "Hearty gulp",
+      "6": "It's been called the \"City of Light\" and the \"City of Love\"",
+      "8": "Clark ___ a.k.a. Superman",
+      "9": "Comedically risky"
+    },
+    "down": {
+      "1": "Baking measure: Abbr.",
+      "2": "Unable to sleep",
+      "3": "Sleepy",
+      "4": "An extraordinary process whereby you become the person you always should have been,\" per David Bowie",
+      "7": "Pig's home"
+    }
+  }
+}

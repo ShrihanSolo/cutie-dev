@@ -1,0 +1,56 @@
+{
+  "date": "2025-08-18",
+  "grid": [
+    [
+      ".",
+      ".",
+      "K",
+      "F",
+      "C"
+    ],
+    [
+      ".",
+      "H",
+      "A",
+      "L",
+      "O"
+    ],
+    [
+      "R",
+      "O",
+      "Y",
+      "A",
+      "L"
+    ],
+    [
+      "A",
+      "P",
+      "A",
+      "R",
+      "T"
+    ],
+    [
+      "M",
+      "I",
+      "K",
+      "E",
+      "S"
+    ]
+  ],
+  "clues": {
+    "across": {
+      "1": "Fast-food chain that sells 50-piece nuggets",
+      "4": "Circle above an angel's head",
+      "5": "Queen or king",
+      "6": "Separately",
+      "7": "Karaoke bar accessories"
+    },
+    "down": {
+      "1": "Lake craft with a palindromic name",
+      "2": "Distress signal for a broken-down car",
+      "3": "Indianapolis NFL team",
+      "4": "Indigenous people of Arizona",
+      "5": "Hard-headed animal"
+    }
+  }
+}

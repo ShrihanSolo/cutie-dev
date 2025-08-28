@@ -1,20 +1,26 @@
 {
   "date": "2025-08-29",
   "grid": [
-    ["H","O","P","E","."],
-    ["A",".","V",".","."],
-    ["T","I","M","E","."],
-    [".",".",".",".","."],
-    [".",".",".",".","."]
+    ["S","H","A","R","K"],
+    ["H","O","R","S","E"],
+    ["A","M","P","S","."],
+    ["R","O","S","E","S"],
+    ["K",".","S","E","A"]
   ],
   "clues": {
     "across": {
-      "1": "Feeling of optimism",
-      "3": "What the clock measures"
+      "1": "Ocean predator that might star in a thriller",
+      "5": "Four-legged champion of the derby",
+      "7": "Electrical measure often seen on a meter",
+      "8": "Blooming beauties in bouquets",
+      "9": "Big body of water"
     },
     "down": {
-      "1": "Common greeting word (short)",
-      "2": "Vehicle (abbr.)"
+      "1": "Carnivorous fish with rows of teeth",
+      "2": "Common animal in fairy tales that neighs",
+      "3": "Unit of current or energy, also amps",
+      "4": "Romantic symbols, often red",
+      "6": "Opposite of land"
     }
   }
 }

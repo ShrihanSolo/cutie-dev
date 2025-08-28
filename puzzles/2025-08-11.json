@@ -1,0 +1,56 @@
+{
+  "date": "2025-08-11",
+  "grid": [
+    [
+      ".",
+      "B",
+      "A",
+      "S",
+      "H"
+    ],
+    [
+      "D",
+      "E",
+      "L",
+      "T",
+      "A"
+    ],
+    [
+      "E",
+      "L",
+      "B",
+      "O",
+      "W"
+    ],
+    [
+      "F",
+      "L",
+      "U",
+      "N",
+      "K"
+    ],
+    [
+      "T",
+      "A",
+      "M",
+      "E",
+      "."
+    ]
+  ],
+  "clues": {
+    "across": {
+      "1": "Blowout party",
+      "5": "Airline with Sky Club lounges",
+      "6": "Body part that can be held with one hand, but not both",
+      "7": "Get an \"F\" on",
+      "8": "Subdued"
+    },
+    "down": {
+      "1": "Ramsey of \"The Last of Us\"",
+      "2": "Collection of Facebook photos",
+      "3": "Building material for the Washington Monument",
+      "4": "\"Red-tailed\" or \"red-shouldered\" bird",
+      "5": "Masterful"
+    }
+  }
+}

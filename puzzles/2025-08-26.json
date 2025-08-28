@@ -1,0 +1,56 @@
+{
+  "date": "2025-08-26",
+  "grid": [
+    [
+      ".",
+      "P",
+      "U",
+      "B",
+      "."
+    ],
+    [
+      ".",
+      "U",
+      "S",
+      "A",
+      "."
+    ],
+    [
+      "C",
+      "L",
+      "U",
+      "B",
+      "S"
+    ],
+    [
+      "P",
+      "S",
+      "A",
+      "K",
+      "I"
+    ],
+    [
+      "R",
+      "E",
+      "L",
+      "A",
+      "X"
+    ]
+  ],
+  "clues": {
+    "across": {
+      "1": "Place to pour a pint",
+      "4": "Host of the 2028 Olympics, for short",
+      "5": "Black suit",
+      "7": "Political commentator Jen",
+      "8": "Kick one's feet up"
+    },
+    "down": {
+      "1": "Sign of life",
+      "2": "Regular patron's order, with \"the\"",
+      "3": "Loaf with a chocolate swirl",
+      "5": "Skill practiced on dummies, for short",
+      "6": "Age at which Tiger Woods made his first hole-in-one"
+    }
+  }
+}

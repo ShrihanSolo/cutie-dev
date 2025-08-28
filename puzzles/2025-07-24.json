@@ -1,0 +1,56 @@
+{
+  "date": "2025-07-24",
+  "grid": [
+    [
+      "S",
+      "M",
+      "A",
+      "S",
+      "H"
+    ],
+    [
+      "P",
+      "A",
+      "S",
+      "T",
+      "A"
+    ],
+    [
+      "I",
+      "N",
+      "P",
+      "E",
+      "N"
+    ],
+    [
+      "K",
+      "N",
+      "E",
+      "A",
+      "D"
+    ],
+    [
+      "Y",
+      "A",
+      "N",
+      "K",
+      "S"
+    ]
+  ],
+  "clues": {
+    "across": {
+      "1": "Overhead tennis shot",
+      "6": "Dish over which Lady and Tramp share a kiss",
+      "7": "How some solve print crosswords",
+      "8": "Work with dough",
+      "9": "The Bronx Bombers, informally"
+    },
+    "down": {
+      "1": "Like hair in a mohawk, often",
+      "2": "Miraculous \"bread from heaven\" in the Book of Exodus",
+      "3": "Colorado ski town",
+      "4": "Entr\u00e9e that comes with its own knife",
+      "5": "They have five digits each, typically"
+    }
+  }
+}

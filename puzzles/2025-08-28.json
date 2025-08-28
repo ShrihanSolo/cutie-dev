@@ -1,22 +1,26 @@
 {
   "date": "2025-08-28",
   "grid": [
-    ["C","A","T","C","H"],
-    ["O",".","R",".","E"],
-    ["D","O","G",".","A"],
-    [".",".",".",".","R"],
-    ["S","H","E","E","T"]
+    ["C","R","A","B","."],
+    ["A","U","D","I","T"],
+    ["S","M","O","K","E"],
+    ["K","O","R","E","A"],
+    [".","R","E","S","T"]
   ],
   "clues": {
     "across": {
-      "1": "Feline pet",
-      "4": "Canine pet",
-      "5": "Bed ____"
+      "1": "SpongeBob's boss, for one",
+      "5": "I.R.S. agent's investigation",
+      "7": "Something you haven't been able to do on U.S. flights since 2000",
+      "8": "Peninsula east of the Yellow Sea",
+      "9": "One 'R' in R&R"
     },
     "down": {
-      "1": "Opposite of out",
-      "2": "Spanish word for gold",
-      "3": "Beats forever"
+      "1": "Barrel-shaped wine container",
+      "2": "Something heard through the grapevine",
+      "3": "Profoundly love",
+      "4": "Vehicles in a peloton",
+      "6": "What a calf drinks from"
     }
   }
 }

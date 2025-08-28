@@ -1,0 +1,56 @@
+{
+  "date": "2025-08-19",
+  "grid": [
+    [
+      "S",
+      "N",
+      "A",
+      "I",
+      "L"
+    ],
+    [
+      "H",
+      "I",
+      "N",
+      "D",
+      "I"
+    ],
+    [
+      "E",
+      "L",
+      "V",
+      "I",
+      "S"
+    ],
+    [
+      "E",
+      "L",
+      "I",
+      "O",
+      "T"
+    ],
+    [
+      "P",
+      "A",
+      "L",
+      "M",
+      "S"
+    ]
+  ],
+  "clues": {
+    "across": {
+      "1": "Animal that falls in love with a tape dispenser, in a classic New Yorker cartoon",
+      "6": "Language written in Devanagari script",
+      "7": "Singer Presley or Costello",
+      "8": "George ___, \"Middlemarch\" author",
+      "9": "Things \"read\" by fortune tellers"
+    },
+    "down": {
+      "1": "Blind followers",
+      "2": "___ wafers (Nabisco treat)",
+      "3": "Heavy item falling from the sky in some classic cartoons",
+      "4": "\"In a pickle\" or \"in a jam\"",
+      "5": "They might end with \"etc.\""
+    }
+  }
+}

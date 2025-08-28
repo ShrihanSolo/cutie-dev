@@ -2,247 +2,148 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Daily 5×5 Crossword</title>
+  <title>The Cutie: Your Daily 5x5</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     /* ========== Base Layout & Theme ========== */
     :root {
-      --grid-max: 520px;              /* Max grid size on large screens */
-      --cell-border: #222;            /* Cell border color */
-      --highlight: #fff5b1;           /* Word highlight background */
-      --current: #ffe070;             /* Current cell highlight */
-      --text: #111;                   /* Base text color */
-      --muted: #666;                  /* Secondary text color */
-      --accent: #0b69ff;              /* Accent for focus ring */
+      --grid-max: 520px;
+      --cell-border: #222;
+      --highlight: #fff5b1;
+      --current: #ffe070;
+      --text: #111;
+      --muted: #666;
+      --accent: #0b69ff;
     }
 
     html, body {
       height: 100%;
       margin: 0;
-      background: #fff;               /* Simple white background per request */
+      background: #fff;
       color: var(--text);
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
     }
 
-    .page {
-      min-height: 100%;
-      display: grid;
-      grid-template-rows: auto 1fr auto;
-    }
+    .page { min-height: 100%; display: grid; grid-template-rows: auto 1fr auto; }
 
-    header, footer {
-      padding: 12px 16px;
-    }
+    header, footer { padding: 12px 16px; }
 
-    header {
-      display: grid;
-      gap: 10px;
-      align-items: center;
-    }
+    header { display: grid; gap: 10px; align-items: center; }
 
-    /* Responsive control bar: stack on small screens, inline on wide */
-    .controls {
-      display: grid;
-      gap: 8px;
-    }
+    .controls { display: grid; gap: 8px; }
     @media (min-width: 800px) {
       header { grid-template-columns: 1fr auto; }
-      .controls {
-        grid-auto-flow: column;
-        align-items: center;
-        justify-content: start;
-      }
+      .controls { grid-auto-flow: column; align-items: center; justify-content: start; }
     }
 
-    .title-line {
-      display: flex;
-      align-items: baseline;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-    .title-line h1 {
-      font-size: 20px;
-      margin: 0;
-    }
-    .title-line .date {
-      color: var(--muted);
-      font-size: 14px;
-    }
+    .title-line { display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; }
+    .title-line h1 { font-size:20px; margin:0; }
+    .title-line .date { color:var(--muted); font-size:14px; }
+    .title-line .timer { color:var(--muted); font-size:14px; margin-left:10px; }
 
     .btn, button, input[type="date"], input[type="file"]::file-selector-button {
-      border: 1px solid #ccc;
-      background: #fafafa;
+      border: 1px solid #c3c4ff;
+      background: #f2f8ff;
       color: var(--text);
       border-radius: 10px;
       padding: 8px 10px;
-      font-size: 14px;
+      font-size: 12px;
       cursor: pointer;
     }
-    .btn:hover, button:hover, input[type="file"]::file-selector-button:hover {
-      background: #f2f2f2;
-    }
-    input[type="date"] {
-      cursor: pointer;
-    }
-    input[type="file"] {
-      max-width: 240px;
-    }
+    .btn:hover, button:hover, input[type="file"]::file-selector-button:hover { background:#f2f2f2; }
+    input[type="date"] { cursor: pointer; }
+    input[type="file"] { max-width:240px; }
 
-    /* ========== Main Content Layout ========== */
-    .main {
-      display: grid;
-      gap: 16px;
-      align-items: start;
-      justify-items: center; /* grid centered on page */
-      padding: 8px 16px 24px;
-    }
+    /* Add visual style for active buttons (used for Autocheck on/off) */
+    .btn.active { background: #dbe2ff; border-color: var(--accent); }
 
-    /* Arrange grid + clues side-by-side on wide screens */
-    @media (min-width: 980px) {
-      .main {
-        grid-template-columns: 1fr 420px;
-        justify-items: center;
-      }
-    }
+    .main { display: grid; gap: 16px; align-items:start; justify-items:center; padding:8px 16px 24px; }
+    @media (min-width:980px) { .main { grid-template-columns: 1fr 420px; justify-items:center; } }
 
-    /* ========== Crossword Grid ========== */
-    .grid-wrap {
-      width: min(92vmin, var(--grid-max));
-      /* keep square feel on small screens; capped on large */
-    }
-
+    .grid-wrap { width: min(92vmin, var(--grid-max)); }
     .grid {
       display: grid;
-      /* columns/rows will be set dynamically based on puzzle size (5×5) */
       border: 2px solid var(--cell-border);
-      background: #000; /* outlines edges nicely around white cells */
+      background: #000;
     }
 
-    .cell {
-      position: relative;
-      aspect-ratio: 1 / 1; /* perfect squares */
-      background: #fff;    /* fillable cells are white */
-      border: 1px solid var(--cell-border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      touch-action: manipulation; /* improve mobile input feel */
-    }
+    .cell { position:relative; aspect-ratio:1/1; background:#fff; border:1px solid var(--cell-border); display:flex; align-items:center; justify-content:center; overflow:hidden; touch-action:manipulation; }
+    .cell.block { background:#000; border-color:#000; }
 
-    .cell.block {
-      background: #000;    /* black squares (blocks) */
-      border-color: #000;
-    }
+    .cell .num { position:absolute; top:2px; left:3px; font-size:clamp(8px,1.5vw,12px); color:var(--text); user-select:none; pointer-events:none; }
 
-    .cell .num {
-      position: absolute;
-      top: 2px;
-      left: 3px;
-      font-size: clamp(8px, 1.5vw, 12px);
-      color: var(--text);
-      user-select: none;
-      pointer-events: none;
-    }
+    .cell input.letter { width:100%; height:100%; border:none; background:transparent; text-align:center; font-weight:700; font-size:clamp(20px,7vmin,40px); text-transform:uppercase; outline:none; caret-color:transparent; }
 
-    .cell input.letter {
-      width: 100%;
-      height: 100%;
-      border: none;
-      background: transparent;
-      text-align: center;
-      font-weight: 700;
-      font-size: clamp(20px, 7vmin, 40px); /* scales with screen */
-      text-transform: uppercase;
-      outline: none;
-      caret-color: transparent; /* we handle focus via highlight */
-    }
-
-    /* Highlights */
     .cell.word-highlight { background: var(--highlight); }
     .cell.current { background: var(--current); }
 
-    /* Optional correctness marking (only when "Check" is clicked) */
-    .cell.incorrect input.letter { color: #c62828; }  /* red for incorrect */
-    .cell.correct   input.letter { color: #2e7d32; }  /* green for correct   */
+    .cell.incorrect input.letter { color: #c62828; }
+    .cell.correct   input.letter { color: #2e7d32; }
 
-    /* ========== Clues Panel ========== */
-    .clues {
-      width: min(92vmin, 720px);
-      max-width: 720px;
-    }
-    @media (min-width: 980px) {
-      .clues { width: 100%; }
-    }
-    .clues h2 {
-      margin: 12px 0 8px;
-      font-size: 16px;
-      border-bottom: 1px solid #eee;
-      padding-bottom: 6px;
-    }
-    .clue-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      display: grid;
-      gap: 6px;
-    }
-    .clue {
-      padding: 6px 8px;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-    .clue:hover { background: #f5f5f5; }
-    .clue.active { background: #eef3ff; outline: 1px solid #d8e4ff; }
-    .clue .num { font-weight: 700; margin-right: 6px; }
+    .clues { width: min(92vmin, 720px); max-width: 720px; }
+    @media (min-width:980px) { .clues { width:100%; } }
+    .clues h2 { margin:12px 0 8px; font-size:16px; border-bottom:1px solid #eee; padding-bottom:6px; }
+    .clue-list { list-style:none; padding:0; margin:0; display:grid; gap:6px; }
+    .clue { padding:6px 8px; border-radius:8px; cursor:pointer; }
+    .clue:hover { background:#f5f5f5; }
+    .clue.active { background:#eef3ff; outline:1px solid #d8e4ff; }
+    .clue .num { font-weight:700; margin-right:6px; }
 
-    /* ========== Utility ========== */
-    .row {
-      display: flex; gap: 8px; flex-wrap: wrap; align-items: center;
-    }
+    .row { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
     .muted { color: var(--muted); }
-    .hidden { display: none !important; }
-    .divider { width: 100%; height: 1px; background: #eee; margin: 10px 0; }
-    .msg { font-size: 14px; color: #c62828; }
-    .ok  { font-size: 14px; color: #2e7d32; }
+    .divider { width:100%; height:1px; background:#eee; margin:10px 0; }
+    .msg { font-size:14px; color:#c62828; }
+    .ok  { font-size:14px; color:#2e7d32; }
+
+    /* Finish message styling */
+    #finishMsg { margin-top:10px; padding:8px 10px; border-radius:8px; display:inline-block; font-weight:700; }
+    #finishMsg.success { background:#e7f6ea; color:#2e7d32; border:1px solid #cde6d2; }
+    #finishMsg.fail { background:#ffe7e7; color:#c62828; border:1px solid #f3c7c7; }
   </style>
 </head>
 <body>
 <div class="page">
   <header>
-    <!-- Title + date display -->
     <div class="title-line">
-      <h1>Daily 5×5 Crossword</h1>
+      <h1>The Cutie</h1>
       <div class="date" id="titleDate">—</div>
+      <div class="timer" id="timerDisplay">00:00</div>
     </div>
 
-    <!-- Controls: pick date, try to fetch by path, or load local JSON file -->
     <div class="controls">
-      <label class="row" title="Pick the puzzle date">
-        <span class="muted">Date:</span>
-        <input type="date" id="datePicker" />
-      </label>
-      <button id="loadByDateBtn" class="btn" title="Attempt to fetch puzzles/YYYY-MM-DD.json">Load by Date</button>
       <div class="row">
         <input type="file" id="fileInput" accept="application/json" />
         <button id="loadFileBtn" class="btn">Load JSON file</button>
       </div>
-      <button id="clearBtn" class="btn" title="Clear all entries for this puzzle">Clear</button>
+      <label class="row" title="Pick the puzzle date">
+        <span class="muted">Date:</span>
+        <input type="date" id="datePicker" />
+      </label>
+
+      <button id="loadByDateBtn" class="btn" title="Attempt to fetch puzzles/YYYY-MM-DD.json">Load by Date</button>
+
+
+
+      <button id="clearBtn" class="btn" title="Clear all entries for this puzzle">Restart</button>
+
+      <!-- Check & Autocheck (Autocheck added beside Check) -->
+      <button id="autoCheckBtn" class="btn" title="Toggle autocheck (mark letters as correct/incorrect while typing)">Autocheck</button>
       <button id="checkBtn" class="btn" title="Mark correct/incorrect letters">Check</button>
+
+      <!-- Reveal controls -->
       <button id="revealCellBtn" class="btn" title="Reveal the current cell">Reveal Cell</button>
       <button id="revealWordBtn" class="btn" title="Reveal the current word">Reveal Word</button>
     </div>
   </header>
 
   <main class="main">
-    <!-- Crossword grid -->
     <div class="grid-wrap">
       <div id="grid" class="grid" aria-label="Crossword grid"></div>
       <div id="status" class="muted" style="margin-top:8px;"></div>
+      <div id="finishMsg" class="hidden" role="status"></div><!-- finish message -->
       <div id="error" class="msg" role="alert" style="margin-top:6px;"></div>
     </div>
 
-    <!-- Clues list -->
     <section class="clues" aria-label="Clues">
       <h2>Across</h2>
       <ul id="acrossList" class="clue-list"></ul>
@@ -252,40 +153,26 @@
   </main>
 
   <footer class="muted">
-    <div>Tip: Click a clue to jump to it. Use <b>Tab/Shift+Tab</b> to move between clues, <b>Enter</b> to toggle direction, and arrow keys to navigate.</div>
+    <div>Tip: Click a clue to jump to it. Use <b>Tab/Shift+Tab</b> to move between clues, <b>Enter</b> or <b>Space</b> to toggle direction, and arrow keys to navigate.</div>
   </footer>
 </div>
 
 <script>
 /*
-  ==============================
-  DAILY 5×5 CROSSWORD – FRONTEND
-  ==============================
+  Enhanced crossword frontend
+  - Adds Autocheck toggle button (continuous marking while typing)
+  - Spacebar toggles direction (like Enter)
+  - Completion detection with "Congrats!" / "Not quite."
+  - Timer that starts on first typed letter and stops on completion
+  - Saves progress and timer state in localStorage under single per-date key
 
-  High-level flow:
-  1) We decide the puzzle date (default: today in the user's local time).
-  2) Try to fetch "puzzles/YYYY-MM-DD.json" next to this HTML file.
-     - If fetch fails (e.g., running as file://), you can load via the "Load JSON file" button.
-  3) We parse the puzzle JSON:
-     - grid: array of strings or char arrays, letters are solution; '.' or '#' are black (blocked).
-     - clues: { across: {num: clue}, down: {num: clue} }
-  4) We compute numbering based on crossword rules:
-     - A non-block cell gets a number if there's a block or grid edge to its left (across start),
-       and/or above it (down start).
-  5) We render a 5×5 grid with <input> in each fillable cell, and tiny clue numbers.
-  6) Interaction:
-     - Click/select cell; current "direction" is across/down; Enter toggles direction.
-     - Typing letters fills and advances to the next cell in the current word.
-     - Backspace deletes/goes back; arrows move; Tab/Shift+Tab go to next/prev clue.
-     - Clue clicks jump you to that word.
-  7) State:
-     - Progress (letters) saved to localStorage under key "cw-YYYY-MM-DD".
-     - "Check" marks correct/incorrect vs solution.
-     - "Reveal Cell"/"Reveal Word" fill from solution.
-
-  Notes:
-  - If you prefer *only* file loading and not fetching by date-path, remove the "Load by Date" parts.
-  - If you host on GitHub Pages/Netlify, the date-based fetch will work as long as the file exists.
+  Storage schema for key "cw-YYYY-MM-DD":
+  {
+    letters: [[...], ...],     // same as before
+    startTime: 169---,         // epoch ms when user first typed
+    elapsed: 12345,            // ms of elapsed at completion (when completed=true)
+    completed: true|false
+  }
 */
 
 (function() {
@@ -297,273 +184,300 @@
   const titleDateEl = document.getElementById('titleDate');
   const errorEl = document.getElementById('error');
   const statusEl = document.getElementById('status');
+  const finishMsgEl = document.getElementById('finishMsg');
+  const timerDisplayEl = document.getElementById('timerDisplay');
 
   const btnLoadByDate = document.getElementById('loadByDateBtn');
   const fileInputEl = document.getElementById('fileInput');
   const btnLoadFile = document.getElementById('loadFileBtn');
   const btnClear = document.getElementById('clearBtn');
   const btnCheck = document.getElementById('checkBtn');
+  const btnAutoCheck = document.getElementById('autoCheckBtn');
   const btnRevealCell = document.getElementById('revealCellBtn');
   const btnRevealWord = document.getElementById('revealWordBtn');
 
-  /* ---------- Globals for current puzzle & state ---------- */
+  /* ---------- Globals ---------- */
   let puzzle = null;             // { date, rows, cols, grid, clues }
-  let numbering = null;          // computed numbering + word maps
+  let numbering = null;          // computed numbering + maps
   let cellInputs = [];           // 2D array of input elements or null for blocks
-  let current = { r: 0, c: 0 };  // current focused cell (row, col)
-  let direction = 'across';      // 'across' or 'down'
-  let isChecked = false;         // whether we've applied correctness marking
+  let current = { r: 0, c: 0 };  // currently focused cell
+  let direction = 'across';      // current direction: 'across'|'down'
+  let isChecked = false;         // whether explicit "Check" applied (not strictly needed)
+  let autoCheckEnabled = false;  // NEW: autocheck toggle
+
+  // Timer related
+  let timerInterval = null;
+  let timerStart = null;         // epoch ms when timer started (or null)
+  let timerElapsedAtStop = null; // ms elapsed when puzzle completed
 
   /* ---------- Utilities ---------- */
 
-  // Format Date -> YYYY-MM-DD
   function fmtDate(d) {
     const y = d.getFullYear();
     const m = String(d.getMonth() + 1).padStart(2, '0');
     const dd = String(d.getDate()).padStart(2, '0');
     return `${y}-${m}-${dd}`;
   }
-
-  // Today (local)
   function todayYMD() { return fmtDate(new Date()); }
-
-  // Safe upper-case single letter A-Z
   function sanitizeLetter(ch) {
     if (!ch) return '';
     const u = ch.toUpperCase();
     return /^[A-Z]$/.test(u) ? u : '';
   }
-
-  // LocalStorage key per date
   function storageKey(date) { return `cw-${date}`; }
 
+  /* ---------- Storage helpers (backwards compatible) ---------- */
+
+  function getSavedState() {
+    if (!puzzle) return null;
+    const raw = localStorage.getItem(storageKey(puzzle.date));
+    if (!raw) return null;
+    try {
+      return JSON.parse(raw);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function persistState(stateObj) {
+    if (!puzzle) return;
+    localStorage.setItem(storageKey(puzzle.date), JSON.stringify(stateObj));
+  }
+
+  // Save letters and time/completion fields into the same object
   function saveProgress() {
     if (!puzzle) return;
+    const existing = getSavedState() || {};
     const letters = cellInputs.map(row => row.map(inp => inp ? (inp.value || '') : null));
-    localStorage.setItem(storageKey(puzzle.date), JSON.stringify({ letters }));
+    existing.letters = letters;
+    // persist timerStart if present
+    if (timerStart) existing.startTime = timerStart;
+    // persist elapsed/time when completed
+    if (timerElapsedAtStop != null) existing.elapsed = timerElapsedAtStop;
+    if (existing.completed) existing.completed = true;
+    persistState(existing);
   }
 
-  function loadProgress() {
+  /* ---------- Timer functions (NEW) ---------- */
+
+  // Format milliseconds to H:MM:SS or MM:SS
+  function formatMs(ms) {
+    if (!ms || ms < 0) ms = 0;
+    const s = Math.floor(ms / 1000);
+    const hh = Math.floor(s / 3600), mm = Math.floor((s % 3600) / 60), ss = s % 60;
+    if (hh > 0) return `${hh}:${String(mm).padStart(2,'0')}:${String(ss).padStart(2,'0')}`;
+    return `${String(mm).padStart(2,'0')}:${String(ss).padStart(2,'0')}`;
+  }
+
+  function updateTimerDisplay() {
+    if (timerStart && !timerElapsedAtStop) {
+      const elapsed = Date.now() - timerStart;
+      timerDisplayEl.textContent = formatMs(elapsed);
+    } else if (timerElapsedAtStop != null) {
+      timerDisplayEl.textContent = formatMs(timerElapsedAtStop);
+    } else {
+      timerDisplayEl.textContent = '00:00';
+    }
+  }
+
+  function startTimerIfNeeded() {
+    // Start timer only once (persist start timestamp)
     if (!puzzle) return;
-    const raw = localStorage.getItem(storageKey(puzzle.date));
-    if (!raw) return;
-    try {
-      const data = JSON.parse(raw);
-      if (!data || !data.letters) return;
-      data.letters.forEach((row, r) => {
-        row.forEach((val, c) => {
-          const inp = cellInputs[r]?.[c];
-          if (inp && typeof val === 'string') inp.value = sanitizeLetter(val);
-        });
-      });
-    } catch (e) { /* ignore malformed */ }
+    if (!timerStart && timerElapsedAtStop == null) {
+      // Try to recover startTime from storage
+      const saved = getSavedState();
+      if (saved?.startTime) {
+        timerStart = saved.startTime;
+      } else {
+        timerStart = Date.now();
+      }
+    }
+    if (timerInterval) return; // already running
+    // Tick every 250ms for snappy display
+    timerInterval = setInterval(updateTimerDisplay, 250);
+    updateTimerDisplay();
+    // save startTime
+    saveProgress();
   }
 
-  function clearProgress() {
-    if (!puzzle) return;
-    localStorage.removeItem(storageKey(puzzle.date));
-    cellInputs.forEach(row => row.forEach(inp => { if (inp) inp.value = ''; }));
-    clearMarks();
-    status('Cleared entries.');
+  function stopTimer(final=true) {
+    if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+    if (final && timerStart) {
+      timerElapsedAtStop = Date.now() - timerStart;
+    }
+    updateTimerDisplay();
+    saveProgress();
   }
 
-  function clearMarks() {
-    isChecked = false;
-    gridEl.querySelectorAll('.incorrect').forEach(el => el.classList.remove('incorrect'));
-    gridEl.querySelectorAll('.correct').forEach(el => el.classList.remove('correct'));
+  function resetTimer() {
+    if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+    timerStart = null;
+    timerElapsedAtStop = null;
+    updateTimerDisplay();
+    // Remove startTime/elapsed/completed from saved state
+    if (puzzle) {
+      const s = getSavedState() || {};
+      delete s.startTime;
+      delete s.elapsed;
+      delete s.completed;
+      persistState(s);
+    }
   }
 
-  function status(msg) {
-    statusEl.textContent = msg || '';
+  /* ---------- UI status helpers ---------- */
+
+  function status(msg) { statusEl.textContent = msg || ''; }
+  function setError(msg) { errorEl.textContent = msg || ''; }
+
+  function showFinishMessage(success) {
+    if (success) {
+      finishMsgEl.className = 'success';
+      const elapsed = Date.now() - timerStart;
+      finishMsgEl.textContent = '🎉 Congrats! You completed the Cutie in ' + formatMs(elapsed) + "!";
+    } else {
+      finishMsgEl.className = 'fail';
+      finishMsgEl.textContent = 'Not quite. Use Check to reveal incorrect letters.';
+    }
+    finishMsgEl.classList.remove('hidden');
+  }
+  function hideFinishMessage() {
+    finishMsgEl.classList.add('hidden');
+    finishMsgEl.className = '';
+    finishMsgEl.textContent = '';
   }
 
-  function setError(msg) {
-    errorEl.textContent = msg || '';
-  }
+  /* ---------- Parsing & Numbering (unchanged logic) ---------- */
 
-  /* ---------- Parsing & Numbering ---------- */
-
-  // Normalize puzzle JSON into internal structure
   function parsePuzzle(json) {
-    // Accept grid as array of strings or array-of-arrays
     let rawGrid = json.grid || [];
     const rows = rawGrid.length;
     if (rows === 0) throw new Error('Grid is empty.');
     const cols = Array.isArray(rawGrid[0]) ? rawGrid[0].length : (rawGrid[0] || '').length;
-    if (rows !== 5 || cols !== 5) {
-      // You can relax this if you ever want non-5×5 — UI supports any size
-      // but the project asks for 5×5 specifically.
-    }
 
     const grid = Array.from({ length: rows }, (_, r) => {
       const rowStr = Array.isArray(rawGrid[r]) ? rawGrid[r].join('') : String(rawGrid[r] || '');
       if (rowStr.length !== cols) throw new Error(`Row ${r} length mismatch.`);
       return Array.from(rowStr).map(ch => {
-        if (ch === '.' || ch === '#') return null;  // block (black square)
-        return sanitizeLetter(ch);                  // solution letter
+        if (ch === '.' || ch === '#') return null;
+        return sanitizeLetter(ch);
       });
     });
 
-    // Normalize clues object
-    const clues = {
-      across: json.clues?.across || {},
-      down:   json.clues?.down   || {},
-    };
-
+    const clues = { across: json.clues?.across || {}, down: json.clues?.down || {} };
     const date = json.date || todayYMD();
-
     return { date, rows, cols, grid, clues };
   }
 
-  // Compute numbering and word mappings
   function computeNumbering(puz) {
     const { rows, cols, grid } = puz;
     const numGrid = Array.from({ length: rows }, () => Array(cols).fill(0));
     let nextNum = 1;
+    const acrossWords = [], downWords = [];
 
-    const acrossWords = []; // [{num, cells:[{r,c}], len}]
-    const downWords   = [];
-
-    // Helpers to walk a word
     function spanAcross(r, c) {
-      const cells = [];
-      let cc = c;
-      while (cc < cols && grid[r][cc] !== null) {
-        cells.push({ r, c: cc });
-        cc++;
-      }
+      const cells = []; let cc = c;
+      while (cc < cols && grid[r][cc] !== null) { cells.push({ r, c: cc }); cc++; }
       return cells;
     }
     function spanDown(r, c) {
-      const cells = [];
-      let rr = r;
-      while (rr < rows && grid[rr][c] !== null) {
-        cells.push({ r: rr, c });
-        rr++;
-      }
+      const cells = []; let rr = r;
+      while (rr < rows && grid[rr][c] !== null) { cells.push({ r: rr, c }); rr++; }
       return cells;
     }
 
-    for (let r = 0; r < rows; r++) {
-      for (let c = 0; c < cols; c++) {
-        if (grid[r][c] === null) continue; // block
-
-        const startAcross = (c === 0 || grid[r][c - 1] === null) && (c + 1 < cols) && grid[r][c + 1] !== null;
-        const startDown   = (r === 0 || grid[r - 1][c] === null) && (r + 1 < rows) && grid[r + 1][c] !== null;
-
-        if (startAcross || startDown) {
-          numGrid[r][c] = nextNum++;
-        }
-
-        if (startAcross) {
-          const cells = spanAcross(r, c);
-          acrossWords.push({ num: numGrid[r][c], cells, len: cells.length });
-        }
-        if (startDown) {
-          const cells = spanDown(r, c);
-          downWords.push({ num: numGrid[r][c], cells, len: cells.length });
-        }
+    for (let r=0;r<rows;r++){
+      for (let c=0;c<cols;c++){
+        if (grid[r][c] === null) continue;
+        const startAcross = (c===0 || grid[r][c-1] === null) && (c+1 < cols) && grid[r][c+1] !== null;
+        const startDown = (r===0 || grid[r-1][c] === null) && (r+1 < rows) && grid[r+1][c] !== null;
+        if (startAcross || startDown) numGrid[r][c] = nextNum++;
+        if (startAcross) acrossWords.push({ num: numGrid[r][c], cells: spanAcross(r,c), len: spanAcross(r,c).length });
+        if (startDown) downWords.push({ num: numGrid[r][c], cells: spanDown(r,c), len: spanDown(r,c).length });
       }
     }
 
-    // For quick lookup: map from (r,c,dir) to word index
-    const wordIndex = {
-      across: new Map(), // key "r,c" -> index in acrossWords
-      down:   new Map(),
-    };
-    acrossWords.forEach((w, i) => w.cells.forEach(({ r, c }) => wordIndex.across.set(`${r},${c}`, i)));
-    downWords  .forEach((w, i) => w.cells.forEach(({ r, c }) => wordIndex.down  .set(`${r},${c}`, i)));
+    const wordIndex = { across: new Map(), down: new Map() };
+    acrossWords.forEach((w,i)=>w.cells.forEach(({r,c})=>wordIndex.across.set(`${r},${c}`, i)));
+    downWords.forEach((w,i)=>w.cells.forEach(({r,c})=>wordIndex.down.set(`${r},${c}`, i)));
 
     return { numGrid, acrossWords, downWords, wordIndex };
   }
 
-  /* ---------- Rendering ---------- */
+  /* ---------- Rendering (mostly unchanged) ---------- */
 
   function renderGrid() {
     if (!puzzle || !numbering) return;
 
-    // Set CSS grid columns/rows
     gridEl.style.gridTemplateColumns = `repeat(${puzzle.cols}, 1fr)`;
     gridEl.style.gridTemplateRows = `repeat(${puzzle.rows}, 1fr)`;
     gridEl.innerHTML = '';
     cellInputs = [];
 
-    for (let r = 0; r < puzzle.rows; r++) {
+    for (let r=0;r<puzzle.rows;r++){
       const rowInputs = [];
-      for (let c = 0; c < puzzle.cols; c++) {
+      for (let c=0;c<puzzle.cols;c++){
         const isBlock = (puzzle.grid[r][c] === null);
         const cell = document.createElement('div');
         cell.className = 'cell' + (isBlock ? ' block' : '');
-        cell.dataset.r = r;
-        cell.dataset.c = c;
+        cell.dataset.r = r; cell.dataset.c = c;
 
         if (!isBlock) {
-          // Tiny clue number if this cell starts an across/down word
           const n = numbering.numGrid[r][c];
           if (n > 0) {
-            const num = document.createElement('div');
-            num.className = 'num';
-            num.textContent = String(n);
-            cell.appendChild(num);
+            const num = document.createElement('div'); num.className = 'num'; num.textContent = String(n); cell.appendChild(num);
           }
 
-          // Letter input
           const inp = document.createElement('input');
           inp.className = 'letter';
-          inp.setAttribute('maxlength', '1');
-          inp.setAttribute('inputmode', 'latin');
-          inp.setAttribute('autocomplete', 'off');
-          inp.setAttribute('aria-label', `Row ${r + 1} column ${c + 1}`);
-          inp.dataset.r = r;
-          inp.dataset.c = c;
+          inp.setAttribute('maxlength','1');
+          inp.setAttribute('inputmode','latin');
+          inp.setAttribute('autocomplete','off');
+          inp.setAttribute('aria-label', `Row ${r+1} column ${c+1}`);
+          inp.dataset.r = r; inp.dataset.c = c;
 
-          // Input events
+          // Limit multi-char paste; keep only first char
           inp.addEventListener('beforeinput', (ev) => {
-            // Prevent multi-char paste; keep only the first letter if any.
-            if (ev.data && ev.data.length > 1) {
+            if (ev.inputType.startsWith('insert') && ev.data) {
+              ev.preventDefault();
+              const letter = sanitizeLetter(ev.data.slice(-1));  // take last char if paste
+              inp.value = letter;             // overwrite
+              typedHandler(r, c, letter);
+          } else if (ev.data && ev.data.length > 1) {
               ev.preventDefault();
               const letter = sanitizeLetter(ev.data[0]);
-              if (letter) {
-                inp.value = letter;
-                onTyped(r, c, letter);
-              }
+              if (letter) { inp.value = letter; typedHandler(r,c,letter); }
             }
           });
 
           inp.addEventListener('input', () => {
             const letter = sanitizeLetter(inp.value);
             inp.value = letter;
-            onTyped(r, c, letter);
+            typedHandler(r, c, letter);
           });
 
+          // NEW: Spacebar toggles direction — handled here in keydown
           inp.addEventListener('keydown', (ev) => onKeyDown(ev, r, c));
-          inp.addEventListener('focus', () => selectCell(r, c, /*maybeToggle=*/false));
-
+          inp.addEventListener('focus', () => selectCell(r,c,false));
           cell.appendChild(inp);
           rowInputs.push(inp);
 
-          // Click on cell toggles direction if already selected
-          cell.addEventListener('pointerdown', () => selectCell(r, c, /*maybeToggle=*/true));
+          cell.addEventListener('pointerdown', () => selectCell(r,c,true));
         } else {
           rowInputs.push(null);
         }
-
         gridEl.appendChild(cell);
       }
       cellInputs.push(rowInputs);
     }
 
-    // Attempt to restore previous entries for this date
+    // Restore saved letters + timer state etc.
     loadProgress();
 
-    // Pick a sensible starting cell (first across word if present)
-    let start = numbering.acrossWords[0]?.cells?.[0] || { r: 0, c: 0 };
-    // If that's a block (degenerate case), find first non-block cell
+    // Choose sensible starting cell
+    let start = numbering.acrossWords[0]?.cells?.[0] || { r:0, c:0 };
     if (puzzle.grid[start.r][start.c] === null) {
-      outer: for (let r = 0; r < puzzle.rows; r++) {
-        for (let c = 0; c < puzzle.cols; c++) {
-          if (puzzle.grid[r][c] !== null) { start = { r, c }; break outer; }
-        }
+      outer: for (let r=0;r<puzzle.rows;r++){
+        for (let c=0;c<puzzle.cols;c++){ if (puzzle.grid[r][c] !== null) { start = {r,c}; break outer; } }
       }
     }
     setDirection('across');
@@ -572,28 +486,17 @@
 
   function renderClues() {
     if (!puzzle || !numbering) return;
-    acrossListEl.innerHTML = '';
-    downListEl.innerHTML = '';
+    acrossListEl.innerHTML = ''; downListEl.innerHTML = '';
 
     function addClues(listEl, words, clueBag, dir) {
       words.forEach(word => {
         const li = document.createElement('li');
-        li.className = 'clue';
-        li.tabIndex = 0;
-        li.dataset.dir = dir;
-        li.dataset.num = String(word.num);
-
+        li.className = 'clue'; li.tabIndex = 0;
+        li.dataset.dir = dir; li.dataset.num = String(word.num);
         const clueText = clueBag?.[word.num] ?? '(no clue)';
         li.innerHTML = `<span class="num">${word.num}.</span> ${escapeHTML(clueText)}`;
-
         li.addEventListener('click', () => jumpToWord(dir, word.num));
-        li.addEventListener('keydown', (ev) => {
-          if (ev.key === 'Enter' || ev.key === ' ') {
-            ev.preventDefault();
-            jumpToWord(dir, word.num);
-          }
-        });
-
+        li.addEventListener('keydown', (ev) => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); jumpToWord(dir, word.num); } });
         listEl.appendChild(li);
       });
     }
@@ -603,104 +506,98 @@
     updateActiveClueHighlight();
   }
 
-  function escapeHTML(s) {
-    return String(s).replace(/[&<>"']/g, ch => ({
-      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
-    }[ch]));
-  }
+  function escapeHTML(s) { return String(s).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[ch]); }
 
   /* ---------- Selection, Navigation & Highlighting ---------- */
 
-  function setDirection(dir) {
-    direction = (dir === 'down') ? 'down' : 'across';
-  }
+  function setDirection(dir) { direction = (dir === 'down') ? 'down' : 'across'; updateActiveClueHighlight(); updateHighlights(); }
 
   function selectCell(r, c, maybeToggle) {
-    if (puzzle.grid[r][c] === null) return; // block, ignore
-
-    // Toggle direction if clicking the same cell again and word exists in other dir
+    if (puzzle.grid[r][c] === null) return;
     if (maybeToggle && current.r === r && current.c === c) {
       const hasAcross = numbering.wordIndex.across.has(`${r},${c}`);
-      const hasDown   = numbering.wordIndex.down.has(`${r},${c}`);
+      const hasDown = numbering.wordIndex.down.has(`${r},${c}`);
       if (direction === 'across' && hasDown) setDirection('down');
       else if (direction === 'down' && hasAcross) setDirection('across');
     }
-
     current = { r, c };
-    // Focus the corresponding input
     const inp = cellInputs[r][c];
-    if (inp) {
-      inp.focus({ preventScroll: true });
-      // Place caret visually (caret hidden, but selecting helps mobile)
-      inp.setSelectionRange(0, 1);
-    }
+    if (inp) { inp.focus({ preventScroll: true }); inp.setSelectionRange(0,1); }
     updateHighlights();
     updateActiveClueHighlight();
   }
 
   function getWordCellsAt(r, c, dir) {
     const list = (dir === 'down') ? numbering.downWords : numbering.acrossWords;
-    const map  = (dir === 'down') ? numbering.wordIndex.down : numbering.wordIndex.across;
+    const map = (dir === 'down') ? numbering.wordIndex.down : numbering.wordIndex.across;
     const idx = map.get(`${r},${c}`);
-    return (idx != null) ? list[idx].cells : [{ r, c }];
+    return (idx != null) ? list[idx].cells : [{r,c}];
   }
 
   function updateHighlights() {
-    // Clear old highlights
     gridEl.querySelectorAll('.word-highlight').forEach(el => el.classList.remove('word-highlight'));
     gridEl.querySelectorAll('.current').forEach(el => el.classList.remove('current'));
-
-    // Highlight current word and cell
     const cells = getWordCellsAt(current.r, current.c, direction);
-    cells.forEach(({ r, c }) => {
-      const cell = cellDiv(r, c);
-      if (cell) cell.classList.add('word-highlight');
-    });
-    const curCell = cellDiv(current.r, current.c);
-    if (curCell) curCell.classList.add('current');
+    cells.forEach(({r,c}) => { const cell = cellDiv(r,c); if (cell) cell.classList.add('word-highlight'); });
+    const cur = cellDiv(current.r, current.c); if (cur) cur.classList.add('current');
   }
 
   function updateActiveClueHighlight() {
-    // Remove existing active markers
     document.querySelectorAll('.clue.active').forEach(el => el.classList.remove('active'));
-
     const dir = direction;
     const listEl = (dir === 'down') ? downListEl : acrossListEl;
-    const list   = (dir === 'down') ? numbering.downWords : numbering.acrossWords;
-    const map    = (dir === 'down') ? numbering.wordIndex.down : numbering.wordIndex.across;
+    const list = (dir === 'down') ? numbering.downWords : numbering.acrossWords;
+    const map = (dir === 'down') ? numbering.wordIndex.down : numbering.wordIndex.across;
     const idx = map.get(`${current.r},${current.c}`);
     if (idx == null) return;
     const num = list[idx].num;
     const clueEl = listEl.querySelector(`.clue[data-dir="${dir}"][data-num="${num}"]`);
     if (clueEl) clueEl.classList.add('active');
-
-    // Update the small status line with clue text
     const clueText = (direction === 'across' ? puzzle.clues.across[num] : puzzle.clues.down[num]) || '(no clue)';
     status(`${direction.toUpperCase()} ${num}: ${clueText}`);
   }
 
-  function onTyped(r, c, letter) {
-    clearMarks();          // remove correctness colors after any edit
-    saveProgress();        // persist progress
+  /* ---------- Typing & Keyboard (modified) ---------- */
 
-    // Auto-advance only if a valid letter typed
+  function typedHandler(r, c, letter) {
+    // Called when an input receives a letter (or deletion)
+
+    // --- Clear marks only for this cell ---
+    const cell = cellDiv(r, c);   // get the <div> for this cell
+    cell.classList.remove('correct', 'incorrect');
+
+    // --- Save progress ---
+    saveProgress();    // persist letters + timer info
+
+    // --- Start timer on first typed letter ---
+    if (!timerStart && letter) {
+      startTimerIfNeeded();
+    }
+
+    // --- Autocheck: only affects filled cells ---
+    if (autoCheckEnabled) checkAnswers();  // you can keep full check or modify to only color non-block cells
+
+    // --- Move to next cell when letter entered ---
     if (letter) moveNextInWord(1);
+
+    // --- Check completion ---
+    evaluateCompletion();
   }
 
   function onKeyDown(ev, r, c) {
     const key = ev.key;
-    if (key === 'ArrowLeft')  { ev.preventDefault(); moveCursor(-1, 0); return; }
-    if (key === 'ArrowRight') { ev.preventDefault(); moveCursor(1, 0);  return; }
-    if (key === 'ArrowUp')    { ev.preventDefault(); moveCursor(0, -1); return; }
-    if (key === 'ArrowDown')  { ev.preventDefault(); moveCursor(0, 1);  return; }
+
+    // Arrow key navigation
+    if (key === 'ArrowLeft')  { ev.preventDefault(); moveCursor(-1,0); return; }
+    if (key === 'ArrowRight') { ev.preventDefault(); moveCursor(1,0); return; }
+    if (key === 'ArrowUp')    { ev.preventDefault(); moveCursor(0,-1); return; }
+    if (key === 'ArrowDown')  { ev.preventDefault(); moveCursor(0,1); return; }
 
     if (key === 'Backspace') {
-      // If current cell has a letter, clear; else go back then clear.
       const inp = cellInputs[r][c];
       if (inp && inp.value) {
         inp.value = '';
         saveProgress();
-        clearMarks();
       } else {
         moveNextInWord(-1, /*erase*/true);
       }
@@ -714,32 +611,38 @@
       return;
     }
 
+    // Enter toggles direction (existing behavior)
     if (key === 'Enter') {
       ev.preventDefault();
-      // Toggle direction if the perpendicular word exists
       const hasAcross = numbering.wordIndex.across.has(`${r},${c}`);
       const hasDown = numbering.wordIndex.down.has(`${r},${c}`);
       if (direction === 'across' && hasDown) setDirection('down');
       else if (direction === 'down' && hasAcross) setDirection('across');
-      updateHighlights();
-      updateActiveClueHighlight();
+      updateHighlights(); updateActiveClueHighlight();
+      return;
+    }
+
+    // NEW: Spacebar acts like Enter (toggle direction) and prevents inserting a space
+    if (key === ' ' || key === 'Spacebar' || ev.code === 'Space') {
+      ev.preventDefault();
+      const hasAcross = numbering.wordIndex.across.has(`${r},${c}`);
+      const hasDown = numbering.wordIndex.down.has(`${r},${c}`);
+      if (direction === 'across' && hasDown) setDirection('down');
+      else if (direction === 'down' && hasAcross) setDirection('across');
+      updateHighlights(); updateActiveClueHighlight();
       return;
     }
   }
 
   function moveCursor(dx, dy) {
-    // Free arrow movement changes direction hint
     if (dx !== 0) setDirection('across');
     if (dy !== 0) setDirection('down');
-
-    let nr = current.r + dy;
-    let nc = current.c + dx;
-    // Skip out-of-bounds and blocks by walking in the direction
+    let nr = current.r + dy, nc = current.c + dx;
     while (nr >= 0 && nr < puzzle.rows && nc >= 0 && nc < puzzle.cols && puzzle.grid[nr][nc] === null) {
       nr += dy; nc += dx;
     }
     if (nr < 0 || nr >= puzzle.rows || nc < 0 || nc >= puzzle.cols) return;
-    selectCell(nr, nc, false);
+    selectCell(nr,nc,false);
   }
 
   function moveNextInWord(step, erase=false) {
@@ -747,7 +650,6 @@
     const idx = cells.findIndex(p => p.r === current.r && p.c === current.c);
     let nextIdx = idx + step;
     if (nextIdx < 0 || nextIdx >= cells.length) {
-      // Move to next/prev clue when at ends
       nextClue(step > 0 ? 1 : -1);
       return;
     }
@@ -762,92 +664,156 @@
   }
 
   function nextClue(sign) {
-    // Linearize clues in Across -> Down order
     const all = [
-      ...numbering.acrossWords.map(w => ({ dir: 'across', num: w.num, start: w.cells[0] })),
-      ...numbering.downWords.map(w => ({ dir: 'down', num: w.num, start: w.cells[0] })),
+      ...numbering.acrossWords.map(w => ({ dir:'across', num:w.num, start:w.cells[0] })),
+      ...numbering.downWords.map(w => ({ dir:'down', num:w.num, start:w.cells[0] })),
     ];
-    // Find current word index
-    const list   = (direction === 'down') ? numbering.downWords : numbering.acrossWords;
-    const map    = (direction === 'down') ? numbering.wordIndex.down : numbering.wordIndex.across;
-    const idx    = map.get(`${current.r},${current.c}`);
+    const list = (direction === 'down') ? numbering.downWords : numbering.acrossWords;
+    const map = (direction === 'down') ? numbering.wordIndex.down : numbering.wordIndex.across;
+    const idx = map.get(`${current.r},${current.c}`);
     const curNum = (idx != null) ? list[idx].num : null;
-
     let curLin = all.findIndex(x => x.dir === direction && x.num === curNum);
-    if (curLin === -1) curLin = 0; // fallback
-
+    if (curLin === -1) curLin = 0;
     let next = (curLin + (sign > 0 ? 1 : -1) + all.length) % all.length;
     setDirection(all[next].dir);
     selectCell(all[next].start.r, all[next].start.c, false);
   }
 
-  function cellDiv(r, c) {
-    return gridEl.querySelector(`.cell[data-r="${r}"][data-c="${c}"]`);
-  }
+  function cellDiv(r,c) { return gridEl.querySelector(`.cell[data-r="${r}"][data-c="${c}"]`); }
+  function jumpToWord(dir, num) { setDirection(dir); const list = dir==='down'?numbering.downWords:numbering.acrossWords; const w = list.find(w=>String(w.num)===String(num)); if (!w) return; const {r,c} = w.cells[0]; selectCell(r,c,false); }
 
-  function jumpToWord(dir, num) {
-    setDirection(dir);
-    const list = dir === 'down' ? numbering.downWords : numbering.acrossWords;
-    const w = list.find(w => String(w.num) === String(num));
-    if (!w) return;
-    const { r, c } = w.cells[0];
-    selectCell(r, c, false);
-  }
+  /* ---------- Check & Reveal (modified to return useful info) ---------- */
 
-  /* ---------- Check & Reveal ---------- */
-
+  // Marks filled cells as correct/incorrect. Returns { allCorrect, allFilled }.
   function checkAnswers() {
-    if (!puzzle) return;
-    isChecked = true;
-    // Remove old marks first
-    clearMarks();
+    if (!puzzle) return { allCorrect:false, allFilled:false };
+    clearMarks(); // remove previous marks before applying new ones
+
+    let allCorrect = true;
+    let allFilled = true;
+
+    for (let r=0;r<puzzle.rows;r++){
+      for (let c=0;c<puzzle.cols;c++){
+        if (puzzle.grid[r][c] === null) continue;
+        const cell = cellDiv(r,c);
+        const inp = cellInputs[r][c];
+        const val = sanitizeLetter(inp.value);
+        if (!val) { allFilled = false; allCorrect = false; continue; } // blank -> not filled & not correct
+        const sol = puzzle.grid[r][c];
+        if (val === sol) cell.classList.add('correct');
+        else { cell.classList.add('incorrect'); allCorrect = false; }
+      }
+    }
+    return { allCorrect, allFilled };
+  }
+
+  // Checks the current crossword answers without updating cell visuals.
+  // Returns { allCorrect, allFilled }.
+  function checkAnswersSilent() {
+    if (!puzzle) return { allCorrect: false, allFilled: false };
+
+    let allCorrect = true;
+    let allFilled = true;
 
     for (let r = 0; r < puzzle.rows; r++) {
       for (let c = 0; c < puzzle.cols; c++) {
-        if (puzzle.grid[r][c] === null) continue;
-        const cell = cellDiv(r, c);
-        const inp  = cellInputs[r][c];
-        const val  = sanitizeLetter(inp.value);
-        const sol  = puzzle.grid[r][c];
-        if (!val) continue; // leave blank cells unmarked
-        if (val === sol) cell.classList.add('correct');
-        else cell.classList.add('incorrect');
+        if (puzzle.grid[r][c] === null) continue;  // skip black squares
+
+        const inp = cellInputs[r][c];
+        const val = sanitizeLetter(inp.value);
+
+        if (!val) {
+          allFilled = false;
+          allCorrect = false;
+          continue;
+        }
+
+        const sol = puzzle.grid[r][c];
+        if (val !== sol) allCorrect = false;
       }
     }
+
+    return { allCorrect, allFilled };
   }
 
   function revealCell() {
     const sol = puzzle.grid[current.r][current.c];
     if (sol === null) return;
     const inp = cellInputs[current.r][current.c];
-    if (inp) {
-      inp.value = sol;
-      saveProgress();
-      clearMarks();
-    }
+    if (inp) { inp.value = sol; saveProgress(); clearMarks(); }
+    // If autocheck on, apply check and maybe completion check
+    if (autoCheckEnabled) checkAnswers();
+    evaluateCompletion();
   }
 
   function revealWord() {
     const cells = getWordCellsAt(current.r, current.c, direction);
-    cells.forEach(({ r, c }) => {
+    cells.forEach(({r,c}) => {
       const sol = puzzle.grid[r][c];
       if (sol !== null) {
         const inp = cellInputs[r][c];
         if (inp) inp.value = sol;
       }
     });
-    saveProgress();
-    clearMarks();
+    saveProgress(); clearMarks();
+    if (autoCheckEnabled) checkAnswers();
+    evaluateCompletion();
   }
 
-  /* ---------- Loading puzzles ---------- */
+  /* ---------- Completion detection & related logic (NEW) ---------- */
 
-  // Try to fetch by date: puzzles/YYYY-MM-DD.json
+  function evaluateCompletion() {
+    if (!puzzle) return;
+    // Check if all fillable cells contain a letter
+    let allFilled = true;
+    for (let r=0;r<puzzle.rows;r++){
+      for (let c=0;c<puzzle.cols;c++){
+        if (puzzle.grid[r][c] === null) continue;
+        const v = sanitizeLetter(cellInputs[r][c].value);
+        if (!v) { allFilled = false; break; }
+      }
+      if (!allFilled) break;
+    }
+
+    if (!allFilled) {
+      // Not complete yet: ensure finish UI is hidden and timer keeps running
+      hideFinishMessage();
+      // If autocheck is on, we likely already show partial marks; don't clear them here.
+      return false;
+    }
+
+    // All filled: check correctness
+    const res = checkAnswersSilent(); // will mark correct/incorrect
+
+    // Mark completed state in storage and stop timer
+    if (res.allCorrect) {
+      showFinishMessage(true);
+    } else {
+      showFinishMessage(false);
+    }
+    // Stop timer and persist elapsed
+    stopTimer(true);
+    // Save completed flag in state
+    const saved = getSavedState() || {};
+    saved.completed = true;
+    if (timerElapsedAtStop != null) saved.elapsed = timerElapsedAtStop;
+    persistState(saved);
+
+    return res.allCorrect;
+  }
+
+  function clearMarks() {
+    isChecked = false;
+    gridEl.querySelectorAll('.incorrect').forEach(el => el.classList.remove('incorrect'));
+    gridEl.querySelectorAll('.correct').forEach(el => el.classList.remove('correct'));
+  }
+
+  /* ---------- Loading puzzles (preserve old behavior + restore timer state) ---------- */
+
   async function loadByDate(ymd) {
     setError('');
     status(`Loading puzzle for ${ymd}…`);
-    const url = `puzzles/${ymd}.json?t=${Date.now()}`; // cache-bust while dev
-
+    const url = `puzzles/${ymd}.json?t=${Date.now()}`;
     try {
       const res = await fetch(url);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -857,7 +823,6 @@
     } catch (e) {
       setError(`Could not load ${url}. You can use "Load JSON file" to pick it locally.`);
       status('');
-      // Optionally fall back to sample if desired
     }
   }
 
@@ -870,59 +835,130 @@
       try {
         const json = JSON.parse(fr.result);
         loadPuzzle(json);
+        clearProgress();
         status(`Loaded puzzle from "${file.name}".`);
       } catch (e) {
         setError('Invalid JSON file.');
         status('');
       }
     };
-    fr.onerror = () => {
-      setError('Failed to read file.');
-      status('');
-    };
+    fr.onerror = () => { setError('Failed to read file.'); status(''); };
     fr.readAsText(file);
   }
 
   function loadPuzzle(json) {
-    // Parse & normalize
     puzzle = parsePuzzle(json);
     titleDateEl.textContent = puzzle.date;
     datePickerEl.value = puzzle.date;
 
-    // Compute numbering
     numbering = computeNumbering(puzzle);
 
-    // Render UI
+    // Reset timer state variables; they will be restored from saved state (loadProgress)
+    timerStart = null;
+    timerElapsedAtStop = null;
+    if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+
     renderGrid();
     renderClues();
-
-    // Reset check marks
     clearMarks();
+    hideFinishMessage();
+
+    // After rendering, check if previously completed
+    const saved = getSavedState();
+    if (saved?.completed) {
+      // If completed, restore elapsed and show the appropriate finish message
+      timerElapsedAtStop = saved.elapsed || 0;
+      updateTimerDisplay();
+      // Show final correctness message based on saved letters
+      const res = checkAnswers();
+      showFinishMessage(res.allCorrect);
+    } else if (saved?.startTime) {
+      // If a timer was started but not completed, restore timerStart and resume ticking
+      timerStart = saved.startTime;
+      startTimerIfNeeded();
+    }
   }
 
-  /* ---------- Wire up controls ---------- */
+  /* ---------- Progress load/clear (updated to include timer fields) ---------- */
 
-  // Default date = today
+  function loadProgress() {
+    if (!puzzle) return;
+    const raw = getSavedState();
+    if (!raw || !raw.letters) return;
+    try {
+      raw.letters.forEach((row, r) => {
+        row.forEach((val, c) => {
+          const inp = cellInputs[r]?.[c];
+          if (inp && typeof val === 'string') inp.value = sanitizeLetter(val);
+        });
+      });
+    } catch (e) { /* ignore malformed */ }
+
+    // Restore timer fields if present
+    if (raw.startTime && !raw.completed) {
+      timerStart = raw.startTime;
+      startTimerIfNeeded();
+    }
+    if (raw.completed) {
+      timerElapsedAtStop = raw.elapsed || 0;
+      updateTimerDisplay();
+      // show finish result (if letters present)
+      const res = checkAnswers();
+      showFinishMessage(res.allCorrect);
+    }
+  }
+
+  function clearProgress() {
+    if (!puzzle) return;
+    localStorage.removeItem(storageKey(puzzle.date));
+    cellInputs.forEach(row => row.forEach(inp => { if (inp) inp.value = ''; }));
+    clearMarks();
+    hideFinishMessage();
+    resetTimer();
+    status('Cleared entries.');
+  }
+
+  /* ---------- Wire up controls & events (including new Autocheck) ---------- */
+
+  // default date
   datePickerEl.value = todayYMD();
   titleDateEl.textContent = datePickerEl.value;
 
   btnLoadByDate.addEventListener('click', () => loadByDate(datePickerEl.value));
   btnLoadFile.addEventListener('click', () => loadFromFile(fileInputEl.files?.[0]));
   btnClear.addEventListener('click', clearProgress);
-  btnCheck.addEventListener('click', checkAnswers);
+  btnCheck.addEventListener('click', () => { checkAnswers(); evaluateCompletion(); });
+
+  // NEW: Autocheck toggle button behavior
+  function updateAutoCheckUI() {
+    if (autoCheckEnabled) {
+      btnAutoCheck.classList.add('active');
+      btnAutoCheck.textContent = 'Autocheck ✔️';
+    } else {
+      btnAutoCheck.classList.remove('active');
+      btnAutoCheck.textContent = 'Autocheck';
+    }
+  }
+  btnAutoCheck.addEventListener('click', () => {
+    autoCheckEnabled = !autoCheckEnabled;
+    updateAutoCheckUI();
+    // If enabling, run an immediate check to color existing filled letters
+    if (autoCheckEnabled) checkAnswers();
+    else clearMarks(); // optionally clear marks when turning off
+  });
+  updateAutoCheckUI();
+
   btnRevealCell.addEventListener('click', revealCell);
   btnRevealWord.addEventListener('click', revealWord);
 
-  // Also allow hitting Enter in date field to load
+  // Enter in date input loads date
   datePickerEl.addEventListener('keydown', (ev) => {
     if (ev.key === 'Enter') { ev.preventDefault(); loadByDate(datePickerEl.value); }
   });
 
-  // Attempt automatic load for today's date on first open.
-  // If it fails (e.g., local file://), you'll see the error and can use the file loader.
+  // Attempt automatic load for today's date on first open
   loadByDate(datePickerEl.value);
-
-  /* ---------- END IIFE ---------- */
+  clearProgress();
 })();
 </script>
 </body>

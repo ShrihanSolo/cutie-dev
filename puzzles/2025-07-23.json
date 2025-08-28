@@ -1,0 +1,56 @@
+{
+  "date": "2025-07-23",
+  "grid": [
+    [
+      "B",
+      "L",
+      "I",
+      "N",
+      "D"
+    ],
+    [
+      "C",
+      "O",
+      "C",
+      "O",
+      "A"
+    ],
+    [
+      "C",
+      "O",
+      "A",
+      "S",
+      "T"
+    ],
+    [
+      "S",
+      "P",
+      "R",
+      "E",
+      "E"
+    ],
+    [
+      ".",
+      "Y",
+      "E",
+      "S",
+      "."
+    ]
+  ],
+  "clues": {
+    "across": {
+      "1": "With 5-Down, mystery meet?",
+      "6": "___ Puffs (cereal)",
+      "7": "Bike without pedaling, say",
+      "8": "Spending binge",
+      "9": "Hoped-for answer when on bended knee"
+    },
+    "down": {
+      "1": "Secretly includes, as on an email",
+      "2": "In a silly mood",
+      "3": "Empathetic words",
+      "4": "Spots for septum piercings",
+      "5": "See 1-Across"
+    }
+  }
+}

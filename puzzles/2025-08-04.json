@@ -1,0 +1,56 @@
+{
+  "date": "2025-08-04",
+  "grid": [
+    [
+      ".",
+      "T",
+      "A",
+      "B",
+      "."
+    ],
+    [
+      "H",
+      "O",
+      "M",
+      "E",
+      "R"
+    ],
+    [
+      "A",
+      "P",
+      "P",
+      "L",
+      "E"
+    ],
+    [
+      "Y",
+      "I",
+      "E",
+      "L",
+      "D"
+    ],
+    [
+      ".",
+      "C",
+      "D",
+      "S",
+      "."
+    ]
+  ],
+  "clues": {
+    "across": {
+      "1": "Key above Caps Lock",
+      "4": "Biased sports fan",
+      "6": "What puts the \"i\" in Silicon Valley?",
+      "7": "Triangular road sign",
+      "8": "Items in a music library, for short"
+    },
+    "down": {
+      "1": "Conversation subject",
+      "2": "Pumped up",
+      "3": "\"Silver ___\" (Christmas classic)",
+      "4": "Farm fodder",
+      "5": "Like pants in the classic Nantucket style"
+    }
+  }
+}

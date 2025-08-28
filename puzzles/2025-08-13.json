@@ -1,0 +1,56 @@
+{
+  "date": "2025-08-13",
+  "grid": [
+    [
+      "M",
+      "A",
+      "S",
+      "T",
+      "."
+    ],
+    [
+      "O",
+      "T",
+      "H",
+      "E",
+      "R"
+    ],
+    [
+      "M",
+      "O",
+      "O",
+      "S",
+      "E"
+    ],
+    [
+      "S",
+      "M",
+      "A",
+      "L",
+      "L"
+    ],
+    [
+      ".",
+      "S",
+      "L",
+      "A",
+      "Y"
+    ]
+  ],
+  "clues": {
+    "across": {
+      "1": "Sailboat's post",
+      "5": "\"My ___ car is a ...\" (bumper sticker phrase)",
+      "7": "Official state mammal of Alaska and Maine",
+      "8": "T-shirt size",
+      "9": "Defeat, as a dragon"
+    },
+    "down": {
+      "1": "Story time readers, perhaps",
+      "2": "There are roughly ten million billion (10^16) of these in a grain of salt",
+      "3": "Sandbank",
+      "4": "Automaker named after an inventor",
+      "6": "Count (on)"
+    }
+  }
+}

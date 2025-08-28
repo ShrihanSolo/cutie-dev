@@ -1,0 +1,56 @@
+{
+  "date": "2025-07-30",
+  "grid": [
+    [
+      ".",
+      "B",
+      "A",
+      "R",
+      "K"
+    ],
+    [
+      "C",
+      "A",
+      "M",
+      "E",
+      "O"
+    ],
+    [
+      "O",
+      "C",
+      "E",
+      "A",
+      "N"
+    ],
+    [
+      "R",
+      "O",
+      "N",
+      "D",
+      "A"
+    ],
+    [
+      "E",
+      "N",
+      "D",
+      "S",
+      "."
+    ]
+  ],
+  "clues": {
+    "across": {
+      "1": "Fire-resistant part of a redwood",
+      "5": "App featuring personalized videos from celebrities",
+      "6": "Where to find sponges that are always wet",
+      "7": "Rousey in the U.F.C. Hall of Fame",
+      "8": "Upturned parts of a canoe"
+    },
+    "down": {
+      "1": "Bring home the ___",
+      "2": "Change, as a bill",
+      "3": "Passes time at the beach, maybe",
+      "4": "Beer brand with the Longboard Island Lager and Big Wave Golden Ale",
+      "5": "What planks, Russian twists and mountain climbers help to exercise"
+    }
+  }
+}

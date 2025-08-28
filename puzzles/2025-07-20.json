@@ -1,0 +1,56 @@
+{
+  "date": "2025-07-20",
+  "grid": [
+    [
+      ".",
+      ".",
+      "E",
+      "M",
+      "S"
+    ],
+    [
+      ".",
+      "P",
+      "L",
+      "E",
+      "A"
+    ],
+    [
+      "B",
+      "E",
+      "L",
+      "L",
+      "Y"
+    ],
+    [
+      "B",
+      "R",
+      "I",
+      "T",
+      "S"
+    ],
+    [
+      "Q",
+      "U",
+      "E",
+      "S",
+      "O"
+    ]
+  ],
+  "clues": {
+    "across": {
+      "1": "The heart of summer?",
+      "4": "Emotional request",
+      "5": "Word before aching or dancing",
+      "6": "Many fans of Premier League clubs",
+      "7": "Nacho topping that rhymes with 3-Down"
+    },
+    "down": {
+      "1": "Leading role on \"The Last of Us\"",
+      "2": "Gooey diner sandwiches",
+      "3": "Authoritative approval",
+      "4": "Country on one side of Lake Titicaca",
+      "5": "Orange-and-brown chip flavor, for short"
+    }
+  }
+}
