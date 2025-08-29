@@ -825,7 +825,16 @@
     try {
       const res = await fetch(url);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const json = await res.json();
+
+      // Read Base64 string instead of JSON
+      const encoded = await res.text();
+
+      // Decode Base64 → JSON string
+      const jsonStr = atob(encoded);
+
+      // Parse JSON string → object
+      const json = JSON.parse(jsonStr);
+
       loadPuzzle(json);
       status(`Loaded puzzle for ${ymd}.`);
     } catch (e) {
