@@ -1,4 +1,4 @@
-name: Run Scraper and Update Puzzles
+name: Update Puzzles
 
 on:
   schedule:
