@@ -66,15 +66,3 @@ PRs, puzzle submissions, and bug reports are welcome. Keep things:
 If you submit puzzles, please include date metadata so they slot into the daily rotation.
 
 ---
-
-## 👩‍🎨 Credits
-- Crosswords and code by **John**  
-- Fonts and vibes: [Google Fonts – Pacifico](https://fonts.google.com/specimen/Pacifico)  
-- Built with a love of tiny challenges and big smiles.
-
----
-
-## 🖼️ Screenshot / Demo (optional)
-Want a preview in the README? Add a GIF or screenshot named `demo.gif` or `screenshot.png` to the repo and include it like this:
-
-![Cutie Demo Image](./cross_example.png)
