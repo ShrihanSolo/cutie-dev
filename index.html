@@ -613,6 +613,11 @@
     // --- Save progress ---
     saveProgress();    // persist letters + timer info
 
+     // --- Start timer on first typed letter ---
+    if (!timerStart && letter) {
+      startTimerIfNeeded();
+    }
+    
     // --- Autocheck: only affects filled cells ---
     if (autoCheckEnabled) checkAnswers();  // you can keep full check or modify to only color non-block cells
 
