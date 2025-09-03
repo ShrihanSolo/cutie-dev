@@ -351,12 +351,20 @@
     }
     updateTimerDisplay();
     saveProgress();
+    
+    if (puzzle) {
+    const s = getSavedState() || {};
+    s.startTime = timerStart;
+    if (final) s.elapsed = timerElapsedAtStop;  // <-- save it
+    if (final) s.completed = true;              // <-- mark completed
+    persistState(s);
+    }
   }
 
   function resetTimer() {
     if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
     timerStart = null;
-    timerElapsedAtStop = null;
+    timerElapsedAtStop = Date.now();
     updateTimerDisplay();
     // Remove startTime/elapsed/completed from saved state
     if (puzzle) {
@@ -366,6 +374,7 @@
       delete s.completed;
       persistState(s);
     }
+    startTimerIfNeeded();
   }
 
   /* ---------- UI status helpers ---------- */
@@ -962,10 +971,11 @@
       timerStart = raw.startTime;
       startTimerIfNeeded();
     }
-    if (raw.completed) {
+     if (raw.completed) {
+      // ✅ Use frozen elapsed time saved when puzzle was completed
       timerElapsedAtStop = raw.elapsed || 0;
       updateTimerDisplay();
-      // show finish result (if letters present)
+      // Show finish result (if letters present)
       const res = checkAnswers();
       showFinishMessage(res.allCorrect);
     }
