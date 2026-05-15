@@ -1107,7 +1107,7 @@
           );
           let nextIdx = idx + step;
           if (nextIdx < 0 || nextIdx >= cells.length) {
-            nextClue(step > 0 ? 1 : -1);
+            nextClue(step > 0 ? 1 : -1, /*landOnEnd*/ step < 0);
             return;
           }
           const { r, c } = cells[nextIdx];
@@ -1120,7 +1120,7 @@
           }
         }
 
-        function nextClue(sign) {
+        function nextClue(sign, landOnEnd = false) {
           const all = [
             ...numbering.acrossWords.map((w) => ({
               dir: "across",
@@ -1147,7 +1147,17 @@
           if (curLin === -1) curLin = 0;
           let next = (curLin + (sign > 0 ? 1 : -1) + all.length) % all.length;
           setDirection(all[next].dir);
-          selectCell(all[next].start.r, all[next].start.c, false);
+          if (landOnEnd) {
+            const cells = getWordCellsAt(
+              all[next].start.r,
+              all[next].start.c,
+              all[next].dir,
+            );
+            const last = cells[cells.length - 1];
+            selectCell(last.r, last.c, false);
+          } else {
+            selectCell(all[next].start.r, all[next].start.c, false);
+          }
         }
 
         function cellDiv(r, c) {
