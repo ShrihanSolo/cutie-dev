@@ -1,5 +1,5 @@
 # 🧩 The Cutie: Your Daily 5×5 Crossword
-By Shrihan Agarwal and Vismaya Pillai
+By Shrihan Agarwal
 
 ![Cutie Demo Image](./cross_example.png)
 
