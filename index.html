@@ -81,6 +81,7 @@
     .cell .num { position:absolute; top:2px; left:3px; font-size:clamp(8px,1.5vw,12px); color:var(--text); user-select:none; pointer-events:none; }
 
     .cell input.letter { width:100%; height:100%; border:none; background:transparent; text-align:center; font-weight:700; font-size:clamp(20px,7vmin,40px); text-transform:uppercase; outline:none; caret-color:transparent; }
+    .cell input.letter::selection { background: transparent; }
 
     .cell.word-highlight { background: var(--highlight); }
     .cell.current { background: var(--current); }
@@ -688,8 +689,6 @@
   }
 
   function moveCursor(dx, dy) {
-    if (dx !== 0) setDirection('across');
-    if (dy !== 0) setDirection('down');
     let nr = current.r + dy, nc = current.c + dx;
     while (nr >= 0 && nr < puzzle.rows && nc >= 0 && nc < puzzle.cols && puzzle.grid[nr][nc] === null) {
       nr += dy; nc += dx;
