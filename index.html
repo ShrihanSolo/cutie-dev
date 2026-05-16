@@ -625,7 +625,7 @@
             timerInterval = null;
           }
           timerStart = null;
-          timerElapsedAtStop = Date.now();
+          timerElapsedAtStop = null;
           updateTimerDisplay();
           // Remove startTime/elapsed/completed from saved state
           if (puzzle) {
@@ -1376,6 +1376,34 @@
           }
         }
 
+        // Find and load the most recent available puzzle by probing backward
+        // from today. Used on first open, since today's puzzle may not be
+        // published yet.
+        async function loadLatest(maxDaysBack = 21) {
+          setError("");
+          status("Finding the latest puzzle…");
+          const today = new Date();
+          for (let i = 0; i <= maxDaysBack; i++) {
+            const d = new Date(today);
+            d.setDate(d.getDate() - i);
+            const ymd = fmtDate(d);
+            try {
+              const res = await fetch(`puzzles/${ymd}.json?t=${Date.now()}`);
+              if (!res.ok) continue;
+              const json = JSON.parse(atob(await res.text()));
+              loadPuzzle(json);
+              status(`Loaded puzzle for ${ymd}.`);
+              return;
+            } catch (e) {
+              /* try an earlier date */
+            }
+          }
+          setError(
+            "No recent puzzle could be found. Pick a date to load one.",
+          );
+          status("");
+        }
+
         function loadFromFile(file) {
           if (!file) return;
           setError("");
@@ -1537,9 +1565,8 @@
           }
         });
 
-        // Attempt automatic load for today's date on first open
-        loadByDate(datePickerEl.value);
-        clearProgress();
+        // Load the most recent available puzzle on first open
+        loadLatest();
       })();
     </script>
   </body>
