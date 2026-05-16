@@ -1010,8 +1010,8 @@
           // --- Autocheck: only affects filled cells ---
           if (autoCheckEnabled) checkAnswers(); // you can keep full check or modify to only color non-block cells
 
-          // --- Move to next cell when letter entered ---
-          if (letter) moveNextInWord(1);
+          // --- Move to next unfilled cell when letter entered ---
+          if (letter) moveNextInWord(1, /*erase*/ false, /*skipFilled*/ true);
 
           // --- Check completion ---
           evaluateCompletion();
@@ -1120,12 +1120,21 @@
           selectCell(nr, nc, false);
         }
 
-        function moveNextInWord(step, erase = false) {
+        function moveNextInWord(step, erase = false, skipFilled = false) {
           const cells = getWordCellsAt(current.r, current.c, direction);
           const idx = cells.findIndex(
             (p) => p.r === current.r && p.c === current.c,
           );
           let nextIdx = idx + step;
+          // When advancing after a letter, skip cells that are already filled
+          // so the cursor lands on the next blank in the word.
+          if (skipFilled && step > 0) {
+            while (nextIdx < cells.length) {
+              const { r, c } = cells[nextIdx];
+              if (!cellInputs[r][c]?.value) break;
+              nextIdx++;
+            }
+          }
           if (nextIdx < 0 || nextIdx >= cells.length) {
             nextClue(step > 0 ? 1 : -1, /*landOnEnd*/ step < 0);
             return;
