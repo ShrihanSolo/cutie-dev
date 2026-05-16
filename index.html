@@ -124,9 +124,6 @@
       input[type="date"] {
         cursor: pointer;
       }
-      input[type="file"] {
-        max-width: 240px;
-      }
 
       /* Add visual style for active buttons (used for Autocheck on/off) */
       .btn.active {
@@ -160,8 +157,8 @@
            justify-content: center vertically centers the grid+text block within
            the column (since .grid-area no longer fills the full height). */
         .grid-wrap {
-          align-self: stretch;     /* fills the row height of .main */
-          justify-self: stretch;   /* fills the full width of the 1fr column */
+          align-self: stretch; /* fills the row height of .main */
+          justify-self: stretch; /* fills the full width of the 1fr column */
           justify-content: center; /* centers grid+text block vertically */
         }
 
@@ -176,7 +173,6 @@
           justify-content: center;
           container-type: inline-size; /* exposes cqw (width); height stays auto */
         }
-
       }
 
       /* ========== Crossword grid ========== */
@@ -196,6 +192,7 @@
       .grid {
         display: grid;
         border: 2px solid var(--cell-border);
+        box-sizing: border-box; /* border included in width/height, not added on top */
         background: #000; /* black shows through as the grid lines between cells */
         /* Mobile/fallback: largest cell fitting 90% viewport width, the 520px
            desktop cap, or 78% viewport height — whichever is most restrictive. */
@@ -326,7 +323,7 @@
       }
       .clue.active {
         background: #c2d8ff;
-        outline: 2px solid #4a7ddf;
+        box-shadow: inset 0 0 0 2px #4a7ddf;
         font-weight: 600;
       }
       .clue .num {
@@ -413,27 +410,20 @@
       <header>
         <div class="title-line">
           <h1>The Cutie</h1>
-          <div class="date" id="titleDate">—</div>
+          <div class="date" id="titleDate" style="display: none">—</div>
           <div class="timer" id="timerDisplay">00:00</div>
         </div>
 
         <div class="controls">
           <div class="row">
-            <input type="file" id="fileInput" accept="application/json" />
-            <button id="loadFileBtn" class="btn">Load JSON file</button>
+            <label for="fileInput" class="btn">Load JSON</label>
+            <input type="file" id="fileInput" accept="application/json" style="display:none" />
           </div>
           <label class="row" title="Pick the puzzle date">
             <span class="muted">Date:</span>
             <input type="date" id="datePicker" />
           </label>
 
-          <button
-            id="loadByDateBtn"
-            class="btn"
-            title="Attempt to fetch puzzles/YYYY-MM-DD.json"
-          >
-            Load by Date
-          </button>
 
           <button
             id="clearBtn"
@@ -544,9 +534,7 @@
         const finishMsgEl = document.getElementById("finishMsg");
         const timerDisplayEl = document.getElementById("timerDisplay");
 
-        const btnLoadByDate = document.getElementById("loadByDateBtn");
         const fileInputEl = document.getElementById("fileInput");
-        const btnLoadFile = document.getElementById("loadFileBtn");
         const btnClear = document.getElementById("clearBtn");
         const btnCheck = document.getElementById("checkBtn");
         const btnAutoCheck = document.getElementById("autoCheckBtn");
@@ -1482,16 +1470,20 @@
           const fr = new FileReader();
           fr.onload = () => {
             try {
-              // Decode Base64 into JSON
-              const decoded = atob(fr.result.trim());
-              const json = JSON.parse(decoded);
-
+              const raw = fr.result.trim();
+              let json;
+              // Detect raw JSON (starts with '{') vs Base64-encoded
+              if (raw.startsWith("{")) {
+                json = JSON.parse(raw);
+              } else {
+                json = JSON.parse(atob(raw));
+              }
               loadPuzzle(json);
               clearProgress();
               status(`Loaded puzzle from "${file.name}".`);
             } catch (e) {
               console.error(e);
-              setError("Invalid encoded puzzle file.");
+              setError("Invalid puzzle file.");
               status("");
             }
           };
@@ -1593,10 +1585,10 @@
         datePickerEl.value = todayYMD();
         titleDateEl.textContent = datePickerEl.value;
 
-        btnLoadByDate.addEventListener("click", () =>
+        datePickerEl.addEventListener("change", () =>
           loadByDate(datePickerEl.value),
         );
-        btnLoadFile.addEventListener("click", () =>
+        fileInputEl.addEventListener("change", () =>
           loadFromFile(fileInputEl.files?.[0]),
         );
         btnClear.addEventListener("click", clearProgress);
@@ -1628,13 +1620,6 @@
         btnRevealCell.addEventListener("click", revealCell);
         btnRevealWord.addEventListener("click", revealWord);
 
-        // Enter in date input loads date
-        datePickerEl.addEventListener("keydown", (ev) => {
-          if (ev.key === "Enter") {
-            ev.preventDefault();
-            loadByDate(datePickerEl.value);
-          }
-        });
 
         // Load the most recent available puzzle on first open
         loadLatest();
