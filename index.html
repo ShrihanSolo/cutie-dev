@@ -300,6 +300,35 @@
           overflow-y: auto;
         }
       }
+      /* Start overlay — shown before the puzzle is started */
+      #startOverlay {
+        display: none;
+        justify-content: center;
+        align-items: center;
+        padding: 48px 0;
+      }
+      #startBtn {
+        font-size: 20px;
+        padding: 14px 40px;
+        border-radius: 14px;
+        border: 2px solid var(--accent);
+        background: var(--accent);
+        color: #fff;
+        cursor: pointer;
+        font-weight: 600;
+      }
+      #startBtn:hover {
+        opacity: 0.88;
+      }
+      /* pre-start state: show overlay, hide clue content */
+      .clues.pre-start #startOverlay {
+        display: flex;
+      }
+      .clues.pre-start h2,
+      .clues.pre-start .clue-list {
+        display: none;
+      }
+
       .clues h2 {
         margin: 12px 0 8px;
         font-size: 16px;
@@ -417,13 +446,17 @@
         <div class="controls">
           <div class="row">
             <label for="fileInput" class="btn">Load JSON</label>
-            <input type="file" id="fileInput" accept="application/json" style="display:none" />
+            <input
+              type="file"
+              id="fileInput"
+              accept="application/json"
+              style="display: none"
+            />
           </div>
           <label class="row" title="Pick the puzzle date">
             <span class="muted">Date:</span>
             <input type="date" id="datePicker" />
           </label>
-
 
           <button
             id="clearBtn"
@@ -490,7 +523,10 @@
           ></div>
         </div>
 
-        <section class="clues" aria-label="Clues">
+        <section id="cluesSection" class="clues" aria-label="Clues">
+          <div id="startOverlay">
+            <button id="startBtn">Start</button>
+          </div>
           <h2>Across</h2>
           <ul id="acrossList" class="clue-list"></ul>
           <h2 style="margin-top: 14px">Down</h2>
@@ -542,6 +578,8 @@
         const timerDisplayEl = document.getElementById("timerDisplay");
 
         const fileInputEl = document.getElementById("fileInput");
+        const cluesSectionEl = document.getElementById("cluesSection");
+        const btnStart = document.getElementById("startBtn");
         const btnClear = document.getElementById("clearBtn");
         const btnCheck = document.getElementById("checkBtn");
         const btnAutoCheck = document.getElementById("autoCheckBtn");
@@ -557,6 +595,7 @@
         let direction = "across"; // current direction: 'across'|'down'
         let isChecked = false; // whether explicit "Check" applied (not strictly needed)
         let autoCheckEnabled = false; // NEW: autocheck toggle
+        let puzzleStarted = false; // true once Start is pressed (or puzzle already in progress)
 
         // Timer related
         let timerInterval = null;
@@ -612,10 +651,13 @@
             row.map((inp) => (inp ? inp.value || "" : null)),
           );
           existing.letters = letters;
-          // persist timerStart if present
-          if (timerStart) existing.startTime = timerStart;
-          // persist elapsed/time when completed
-          if (timerElapsedAtStop != null) existing.elapsed = timerElapsedAtStop;
+          // Save elapsed duration (not the epoch start) so reload doesn't drift
+          if (timerElapsedAtStop != null) {
+            existing.elapsed = timerElapsedAtStop; // completed or explicitly stopped
+          } else if (timerStart) {
+            existing.elapsed = Date.now() - timerStart; // running — snapshot current elapsed
+          }
+          delete existing.startTime; // no longer used
           if (existing.completed) existing.completed = true;
           persistState(existing);
         }
@@ -649,19 +691,12 @@
           // Start timer only once (persist start timestamp)
           if (!puzzle) return;
           if (!timerStart && timerElapsedAtStop == null) {
-            // Try to recover startTime from storage
-            const saved = getSavedState();
-            if (saved?.startTime) {
-              timerStart = saved.startTime;
-            } else {
-              timerStart = Date.now();
-            }
+            timerStart = Date.now();
           }
           if (timerInterval) return; // already running
           // Tick every 250ms for snappy display
           timerInterval = setInterval(updateTimerDisplay, 250);
           updateTimerDisplay();
-          // save startTime
           saveProgress();
         }
 
@@ -678,9 +713,9 @@
 
           if (puzzle) {
             const s = getSavedState() || {};
-            s.startTime = timerStart;
-            if (final) s.elapsed = timerElapsedAtStop; // <-- save it
-            if (final) s.completed = true; // <-- mark completed
+            delete s.startTime;
+            if (final) s.elapsed = timerElapsedAtStop;
+            if (final) s.completed = true;
             persistState(s);
           }
         }
@@ -716,7 +751,9 @@
         function showFinishMessage(success) {
           if (success) {
             finishMsgEl.className = "success";
-            const elapsed = Date.now() - timerStart;
+            const elapsed = timerElapsedAtStop != null
+              ? timerElapsedAtStop
+              : (timerStart ? Date.now() - timerStart : 0);
             finishMsgEl.textContent =
               "🎉 Congrats! You completed the Cutie in " +
               formatMs(elapsed) +
@@ -1071,8 +1108,8 @@
           // --- Save progress ---
           saveProgress(); // persist letters + timer info
 
-          // --- Start timer on first typed letter ---
-          if (!timerStart && letter) {
+          // --- Start timer on first typed letter (only if puzzle has been started) ---
+          if (puzzleStarted && !timerStart && letter) {
             startTimerIfNeeded();
           }
 
@@ -1361,6 +1398,17 @@
           evaluateCompletion();
         }
 
+        function startPuzzle() {
+          puzzleStarted = true;
+          cluesSectionEl.classList.remove("pre-start");
+          // If there's a paused elapsed time, resume from it rather than starting fresh
+          if (timerElapsedAtStop != null) {
+            timerStart = Date.now() - timerElapsedAtStop;
+            timerElapsedAtStop = null;
+          }
+          startTimerIfNeeded();
+        }
+
         function revealPuzzle() {
           for (let r = 0; r < puzzle.rows; r++) {
             for (let c = 0; c < puzzle.cols; c++) {
@@ -1526,6 +1574,7 @@
           numbering = computeNumbering(puzzle);
 
           // Reset timer state variables; they will be restored from saved state (loadProgress)
+          puzzleStarted = false; // must be false before renderGrid so loadProgress doesn't start the timer
           timerStart = null;
           timerElapsedAtStop = null;
           if (timerInterval) {
@@ -1538,21 +1587,24 @@
           clearMarks();
           hideFinishMessage();
 
-          // After rendering, check if previously completed
+          // After rendering, check saved state
           const saved = getSavedState();
           if (saved?.completed) {
-            // If completed, restore elapsed and show the appropriate finish message
+            // Completed — skip Start button, show result directly
+            puzzleStarted = true;
             timerElapsedAtStop = saved.elapsed || 0;
             updateTimerDisplay();
-            // Show final correctness message based on saved letters
             const res = checkAnswers();
             showFinishMessage(res.allCorrect);
-          } else if (saved?.startTime) {
-            // If a timer was started but not completed, restore timerStart and resume ticking
-            timerStart = saved.startTime;
-            startTimerIfNeeded();
           } else {
-            startTimerIfNeeded();
+            // Fresh or in-progress — always show Start button.
+            // Keep timerElapsedAtStop set so startPuzzle can resume from it.
+            puzzleStarted = false;
+            if (saved?.elapsed) {
+              timerElapsedAtStop = saved.elapsed;
+              updateTimerDisplay(); // show paused time while waiting for Start
+            }
+            cluesSectionEl.classList.add("pre-start");
           }
         }
 
@@ -1574,11 +1626,6 @@
             /* ignore malformed */
           }
 
-          // Restore timer fields if present
-          if (raw.startTime && !raw.completed) {
-            timerStart = raw.startTime;
-            startTimerIfNeeded();
-          }
           if (raw.completed) {
             // ✅ Use frozen elapsed time saved when puzzle was completed
             timerElapsedAtStop = raw.elapsed || 0;
@@ -1641,10 +1688,10 @@
         });
         updateAutoCheckUI();
 
+        btnStart.addEventListener("click", startPuzzle);
         btnRevealCell.addEventListener("click", revealCell);
         btnRevealWord.addEventListener("click", revealWord);
         btnRevealPuzzle.addEventListener("click", revealPuzzle);
-
 
         // Load the most recent available puzzle on first open
         loadLatest();
