@@ -908,6 +908,7 @@
 
                 // Limit multi-char paste; keep only first char
                 inp.addEventListener("beforeinput", (ev) => {
+                  if (!puzzleStarted) { ev.preventDefault(); return; }
                   if (ev.inputType.startsWith("insert") && ev.data) {
                     ev.preventDefault();
                     const letter = sanitizeLetter(ev.data.slice(-1)); // take last char if paste
@@ -924,6 +925,7 @@
                 });
 
                 inp.addEventListener("input", () => {
+                  if (!puzzleStarted) { inp.value = ""; return; }
                   const letter = sanitizeLetter(inp.value);
                   inp.value = letter;
                   typedHandler(r, c, letter);
@@ -1099,7 +1101,7 @@
         /* ---------- Typing & Keyboard (modified) ---------- */
 
         function typedHandler(r, c, letter) {
-          // Called when an input receives a letter (or deletion)
+          if (!puzzleStarted) return;
 
           // --- Clear marks only for this cell ---
           const cell = cellDiv(r, c); // get the <div> for this cell
@@ -1149,6 +1151,8 @@
           }
 
           if (key === "Backspace") {
+            ev.preventDefault();
+            if (!puzzleStarted) return;
             const inp = cellInputs[r][c];
             if (inp && inp.value) {
               inp.value = "";
@@ -1156,7 +1160,6 @@
             } else {
               moveNextInWord(-1, /*erase*/ true);
             }
-            ev.preventDefault();
             return;
           }
 
@@ -1199,6 +1202,7 @@
             !ev.altKey
           ) {
             ev.preventDefault();
+            if (!puzzleStarted) return;
             const letter = sanitizeLetter(key);
             if (letter) {
               cellInputs[r][c].value = letter;
@@ -1378,9 +1382,9 @@
             saveProgress();
             clearMarks();
           }
-          // If autocheck on, apply check and maybe completion check
           if (autoCheckEnabled) checkAnswers();
           evaluateCompletion();
+          selectCell(current.r, current.c, false);
         }
 
         function revealWord() {
@@ -1396,6 +1400,7 @@
           clearMarks();
           if (autoCheckEnabled) checkAnswers();
           evaluateCompletion();
+          selectCell(current.r, current.c, false);
         }
 
         function startPuzzle() {
@@ -1692,6 +1697,18 @@
         btnRevealCell.addEventListener("click", revealCell);
         btnRevealWord.addEventListener("click", revealWord);
         btnRevealPuzzle.addEventListener("click", revealPuzzle);
+
+        // Keep grid focus when clicking buttons/clues/etc. outside the grid.
+        // preventDefault on mousedown blocks the browser's default focus-move
+        // behaviour; click events still fire, so all buttons work normally.
+        // Carve out real text inputs (date picker, file input) so they can
+        // still receive focus when clicked.
+        document.addEventListener("mousedown", (ev) => {
+          const tag = ev.target.tagName;
+          if (tag === "INPUT" || tag === "SELECT" || tag === "TEXTAREA" || ev.target.isContentEditable) return;
+          if (!puzzle || !current) return;
+          ev.preventDefault();
+        }, { passive: false });
 
         // Load the most recent available puzzle on first open
         loadLatest();
