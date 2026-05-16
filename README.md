@@ -3,33 +3,28 @@ By Shrihan Agarwal
 
 ![Cutie Demo Image](./cross_example.png)
 
-Welcome to **The Cutie** — a bite-sized crossword puzzle you can play every day, right in your browser!  
-Think of it as your daily brain-stretch… but cuter. ✨
+Welcome to **The Cutie** — a daily bite-sized crossword puzzle.
 
 ---
 
-## ✨ What is The Cutie?
+## What is The Cutie?
 - A **5×5 crossword** — small enough to squeeze in between sips of coffee ☕,  
-  but tricky enough to make you feel clever. 😎  
+  but tricky enough to make you feel clever. Or rage, depending on the clue!
 - **Updated daily** with fresh puzzles.  
-- Styled with love (and a little bit of CSS magic).  
-- Runs entirely in your browser — no accounts, no downloads, just play.
 
 ---
 
-## 🎮 Features
-- 🗓️ Load today’s puzzle (or pick a date to revisit the archives).  
-- 📂 Load your own puzzle JSON files (yes, you can make custom Cuties!).  
-- 🔄 Restart anytime if you want a fresh crack at it.  
-- ✅ Toggle **Autocheck** to see if you’re on the right track.  
-- ✨ Reveal just a cell… or a whole word if you’re really stuck.  
-- ⏱️ Built-in timer to race yourself (or your friends).  
-- 🖋️ Smooth keyboard navigation, just like the big crosswords.
+## Features
+- You can load today’s puzzle (or pick a date to revisit the archives).  
+- Load your own puzzle JSON files (you can make a custom cutie to share with friends!).  
+- Toggle **Autocheck** to see if you’re on the right track.  
+- Built-in timer to race yourself (or your friends).  
+- Smooth keyboard navigation.
 
 ---
 
-## 🌍 Updates
-Crosswords are refreshed at **3, 4, and 5 AM UTC** daily.  
+## Updates
+Crosswords are refreshed by **5 AM UTC** daily.  
 So wherever you are in the world, your next Cutie will be waiting for you.  
 
 ---
@@ -42,7 +37,7 @@ So wherever you are in the world, your next Cutie will be waiting for you.
 
 ---
 
-## 🛠️ Development
+## Development
 This is a static HTML/JS project. To run locally:
 ```bash
 git clone https://github.com/yourname/cutie.git
@@ -51,18 +46,18 @@ open index.html
 ```
 
 Tips for developers:
-- Puzzles are JSON files (schema included in `puzzles/` — follow the format to add puzzles).  
-- The UI is intentionally minimal and accessible — feel free to improve styles or keyboard behavior.  
-- If you add new features, please keep the UI responsive (5×5 should look great on phones).
+- Puzzles are b64 encoded JSON files so someone cannot easily cheat (schema included in `puzzles/`).
+- The UI is intentionally minimal and accessible.
+- `index.html` is the website code.
 
 ---
 
-## 🤝 Contributing
-PRs, puzzle submissions, and bug reports are welcome. Keep things:
-- small and cute,
-- accessible,
-- and fun.
+## Contributing
+PRs, puzzle submissions, and bug reports are welcome. If you make changes, keep things:
+- In the same ~vibe~
+- Add features rather than changing existing features.
+- UI changes are welcomed, other changes may not be accepted.
 
-If you submit puzzles, please include date metadata so they slot into the daily rotation.
+You can submit your own puzzles to the submitted_puzzles/ folder.
 
 ---
