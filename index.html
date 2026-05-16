@@ -134,51 +134,71 @@
         border-color: var(--accent);
       }
 
+      /* ========== Main layout ========== */
+
+      /* Mobile: single centered column, items stacked vertically. */
       .main {
         display: grid;
-        gap: 16px;
-        align-items: start;
+        gap: 16px; /* space between the crossword and clue list */
+        align-items: start; /* items sit at the top of their row, not stretched */
         justify-items: center;
         padding: 8px 16px 24px;
       }
+
+      /* Desktop (≥980px): two-column layout — crossword left, clue list right. */
       @media (min-width: 980px) {
         .main {
+          /* 1fr = crossword column takes all space left after the 420px clue list */
           grid-template-columns: 1fr 420px;
           justify-items: center;
+          gap: 8px; /* tighter gap to give the crossword more room */
+          padding: 8px 8px 4px; /* reduced side padding for the same reason */
         }
+
+        /* .grid-wrap is the left column (crossword side).
+           stretch in both axes so it fills its full grid track.
+           justify-content: center vertically centers the grid+text block within
+           the column (since .grid-area no longer fills the full height). */
         .grid-wrap {
-          align-self: stretch;
-          justify-self: stretch;
+          align-self: stretch;     /* fills the row height of .main */
+          justify-self: stretch;   /* fills the full width of the 1fr column */
+          justify-content: center; /* centers grid+text block vertically */
         }
+
+        /* .grid-area wraps only the <div.grid>; its height is auto (shrinks to
+           the grid). Width is 100% of .grid-wrap so the grid can read it via cqw.
+           container-type: inline-size makes cqw available without containing height,
+           which lets grid-area's height shrink to exactly the grid's height. */
         .grid-area {
-          flex: 1;
-          min-height: 0;
           width: 100%;
           display: flex;
           align-items: center;
           justify-content: center;
-          container-type: size;
+          container-type: inline-size; /* exposes cqw (width); height stays auto */
         }
-        .grid {
-          --cell: min(
-            100cqw / var(--cols, 5),
-            100cqh / var(--rows, 5)
-          );
-        }
+
       }
 
+      /* ========== Crossword grid ========== */
+
+      /* .grid-wrap: flex column that stacks the grid, then status/error text below.
+         align-items: center keeps both the grid and the text horizontally centered. */
       .grid-wrap {
         display: flex;
         flex-direction: column;
         align-items: center;
       }
-      /* Grid sizes itself to any rows/cols: --cell is the largest square cell
-         that fits within the available width, the desktop max, and the
-         viewport height. Width/height are derived so cells stay square. */
+
+      /* .grid: the actual crossword cell grid.
+         Cell size (--cell) is computed as the largest square cell that fits the
+         available space. JS sets --cols/--rows from the puzzle dimensions.
+         Width and height are derived from --cell so cells stay perfectly square. */
       .grid {
         display: grid;
         border: 2px solid var(--cell-border);
-        background: #000;
+        background: #000; /* black shows through as the grid lines between cells */
+        /* Mobile/fallback: largest cell fitting 90% viewport width, the 520px
+           desktop cap, or 78% viewport height — whichever is most restrictive. */
         --cell: min(
           90vw / var(--cols, 5),
           var(--grid-max) / var(--cols, 5),
@@ -186,6 +206,15 @@
         );
         width: calc(var(--cell) * var(--cols, 5));
         height: calc(var(--cell) * var(--rows, 5));
+      }
+      /* Desktop override — must come AFTER the base .grid rule above so it wins
+         the cascade (same specificity; later position = higher priority).
+         Cell is the smaller of: full column width, or 90% of viewport height.
+         The vh cap prevents the grid from being taller than the screen. */
+      @media (min-width: 980px) {
+        .grid {
+          --cell: min(100cqw / var(--cols, 5), 70vh / var(--rows, 5));
+        }
       }
 
       .cell {
@@ -270,6 +299,8 @@
       @media (min-width: 980px) {
         .clues {
           width: 100%;
+          max-height: 70vh;
+          overflow-y: auto;
         }
       }
       .clues h2 {
@@ -1021,7 +1052,10 @@
           const clueEl = listEl.querySelector(
             `.clue[data-dir="${dir}"][data-num="${num}"]`,
           );
-          if (clueEl) clueEl.classList.add("active");
+          if (clueEl) {
+            clueEl.classList.add("active");
+            clueEl.scrollIntoView({ block: "nearest", behavior: "smooth" });
+          }
           const clueText =
             (direction === "across"
               ? puzzle.clues.across[num]
