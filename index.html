@@ -1091,6 +1091,7 @@
             clueEl.classList.add("active");
             clueEl.scrollIntoView({ block: "nearest", behavior: "smooth" });
           }
+          if (!puzzleStarted) return;
           const clueText =
             (direction === "across"
               ? puzzle.clues.across[num]
@@ -1610,6 +1611,7 @@
               updateTimerDisplay(); // show paused time while waiting for Start
             }
             cluesSectionEl.classList.add("pre-start");
+            status(""); // hide any clue text below grid
           }
         }
 
