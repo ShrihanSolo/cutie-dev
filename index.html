@@ -17,6 +17,10 @@
         --cell-border: #222;
         --highlight: #fff5b1;
         --current: #ffe070;
+        /* Translucent versions of the selection colors, layered on top of a
+           cell's letter so the selection stays visible over autocheck marks */
+        --highlight-overlay: rgba(255, 245, 177, 0.55);
+        --current-overlay: rgba(255, 224, 112, 0.6);
         --text: #111;
         --muted: #666;
         --accent: #0b69ff;
@@ -214,17 +218,30 @@
         background: var(--current);
       }
 
-    /* Autocheck on: switch selection to blue so it doesn't muddy with red/green */
+      /* Autocheck on: switch selection to blue so it doesn't muddy with red/green */
       body.autocheck-on {
         --highlight: #b7d5fb;
         --current: #5b9bff;
+        --highlight-overlay: rgba(183, 213, 251, 0.9);
+        --current-overlay: rgba(91, 155, 255, 0.75);
       }
 
       .cell.incorrect input.letter {
-        background: rgba(254, 202, 202, 0.6);
+        background: rgba(254, 202, 202, 0.8);
       }
       .cell.correct input.letter {
-        background: rgba(187, 247, 208, 0.6);
+        background: rgba(187, 247, 208, 0.8);
+      }
+
+      /* Selection tint sits ON TOP of the autocheck (correct/incorrect)
+         background, so a selected cell stays visible while marked.
+         The .current rule must follow .word-highlight to win on the
+         cell that is both. */
+      .cell.word-highlight input.letter {
+        box-shadow: inset 0 0 0 100px var(--highlight-overlay);
+      }
+      .cell.current input.letter {
+        box-shadow: inset 0 0 0 100px var(--current-overlay);
       }
 
       .clues {
@@ -258,8 +275,9 @@
         background: #f5f5f5;
       }
       .clue.active {
-        background: #eef3ff;
-        outline: 1px solid #d8e4ff;
+        background: #c2d8ff;
+        outline: 2px solid #4a7ddf;
+        font-weight: 600;
       }
       .clue .num {
         font-weight: 700;
@@ -1398,9 +1416,7 @@
               /* try an earlier date */
             }
           }
-          setError(
-            "No recent puzzle could be found. Pick a date to load one.",
-          );
+          setError("No recent puzzle could be found. Pick a date to load one.");
           status("");
         }
 
