@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>The Cutie: Your Daily 5x5</title>
+    <title>The Cutie: Your Daily Crossword</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -145,17 +145,28 @@
       }
 
       .grid-wrap {
-        width: min(92vmin, var(--grid-max));
+        display: flex;
+        flex-direction: column;
+        align-items: center;
       }
+      /* Grid sizes itself to any rows/cols: --cell is the largest square cell
+         that fits within the available width, the desktop max, and the
+         viewport height. Width/height are derived so cells stay square. */
       .grid {
         display: grid;
         border: 2px solid var(--cell-border);
         background: #000;
+        --cell: min(
+          90vw / var(--cols, 5),
+          var(--grid-max) / var(--cols, 5),
+          78vh / var(--rows, 5)
+        );
+        width: calc(var(--cell) * var(--cols, 5));
+        height: calc(var(--cell) * var(--rows, 5));
       }
 
       .cell {
         position: relative;
-        aspect-ratio: 1/1;
         background: #fff;
         border: 1px solid var(--cell-border);
         display: flex;
@@ -163,6 +174,7 @@
         justify-content: center;
         overflow: hidden;
         touch-action: manipulation;
+        container-type: size;
       }
       .cell.block {
         background: #000;
@@ -171,9 +183,9 @@
 
       .cell .num {
         position: absolute;
-        top: 2px;
-        left: 3px;
-        font-size: clamp(8px, 1.5vw, 12px);
+        top: 5cqmin;
+        left: 7cqmin;
+        font-size: clamp(8px, 18cqmin, 13px);
         color: var(--text);
         user-select: none;
         pointer-events: none;
@@ -186,7 +198,7 @@
         background: transparent;
         text-align: center;
         font-weight: 700;
-        font-size: clamp(20px, 7vmin, 40px);
+        font-size: clamp(18px, 56cqmin, 44px);
         text-transform: uppercase;
         outline: none;
         caret-color: transparent;
@@ -759,6 +771,8 @@
 
           gridEl.style.gridTemplateColumns = `repeat(${puzzle.cols}, 1fr)`;
           gridEl.style.gridTemplateRows = `repeat(${puzzle.rows}, 1fr)`;
+          gridEl.style.setProperty("--cols", puzzle.cols);
+          gridEl.style.setProperty("--rows", puzzle.rows);
           gridEl.innerHTML = "";
           cellInputs = [];
 
@@ -1347,7 +1361,7 @@
             status(`Loaded puzzle for ${ymd}.`);
           } catch (e) {
             setError(
-              `Could not load the puzzle for ${ymd}. It either has a non-5x5 size or is not available yet. Try loading a different date!`,
+              `Could not load the puzzle for ${ymd}. It may not be available yet — try loading a different date!`,
             );
             status("");
           }
