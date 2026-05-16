@@ -464,6 +464,13 @@
           >
             Reveal Word
           </button>
+          <button
+            id="revealPuzzleBtn"
+            class="btn"
+            title="Reveal all cells in the puzzle"
+          >
+            Reveal Puzzle
+          </button>
         </div>
       </header>
 
@@ -540,6 +547,7 @@
         const btnAutoCheck = document.getElementById("autoCheckBtn");
         const btnRevealCell = document.getElementById("revealCellBtn");
         const btnRevealWord = document.getElementById("revealWordBtn");
+        const btnRevealPuzzle = document.getElementById("revealPuzzleBtn");
 
         /* ---------- Globals ---------- */
         let puzzle = null; // { date, rows, cols, grid, clues }
@@ -1353,6 +1361,22 @@
           evaluateCompletion();
         }
 
+        function revealPuzzle() {
+          for (let r = 0; r < puzzle.rows; r++) {
+            for (let c = 0; c < puzzle.cols; c++) {
+              const sol = puzzle.grid[r][c];
+              if (sol !== null) {
+                const inp = cellInputs[r][c];
+                if (inp) inp.value = sol;
+              }
+            }
+          }
+          saveProgress();
+          clearMarks();
+          if (autoCheckEnabled) checkAnswers();
+          evaluateCompletion();
+        }
+
         /* ---------- Completion detection & related logic (NEW) ---------- */
 
         function evaluateCompletion() {
@@ -1619,6 +1643,7 @@
 
         btnRevealCell.addEventListener("click", revealCell);
         btnRevealWord.addEventListener("click", revealWord);
+        btnRevealPuzzle.addEventListener("click", revealPuzzle);
 
 
         // Load the most recent available puzzle on first open
