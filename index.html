@@ -146,6 +146,25 @@
           grid-template-columns: 1fr 420px;
           justify-items: center;
         }
+        .grid-wrap {
+          align-self: stretch;
+          justify-self: stretch;
+        }
+        .grid-area {
+          flex: 1;
+          min-height: 0;
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          container-type: size;
+        }
+        .grid {
+          --cell: min(
+            100cqw / var(--cols, 5),
+            100cqh / var(--rows, 5)
+          );
+        }
       }
 
       .grid-wrap {
@@ -429,7 +448,9 @@
 
       <main class="main">
         <div class="grid-wrap">
-          <div id="grid" class="grid" aria-label="Crossword grid"></div>
+          <div class="grid-area">
+            <div id="grid" class="grid" aria-label="Crossword grid"></div>
+          </div>
           <div id="status" class="muted" style="margin-top: 8px"></div>
           <div id="finishMsg" class="hidden" role="status"></div>
           <!-- finish message -->
