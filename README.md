@@ -29,11 +29,11 @@ So wherever you are in the world, your next Cutie will be waiting for you.
 
 ---
 
-## 💡 How to Play
+## How to Play
 1. Open the page in your browser.  
 2. Click a clue or tap a square to start typing.  
 3. Use arrow keys, **Tab/Shift+Tab**, and **Enter/Space** to zip around.  
-4. Fill in all the words and bask in your crossword glory. 🏆  
+4. Fill in all the words and bask in your crossword glory.  
 
 ---
 
