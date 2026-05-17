@@ -64,6 +64,14 @@
       .controls {
         display: grid;
         gap: 8px;
+        grid-template-columns: repeat(3, 1fr); /* 3 buttons per row on mobile */
+      }
+      /* Load JSON + Date share one full-width row above the button grid */
+      .controls-top {
+        grid-column: 1 / -1;
+        display: flex;
+        gap: 8px;
+        align-items: center;
       }
       @media (min-width: 800px) {
         header {
@@ -71,8 +79,12 @@
         }
         .controls {
           grid-auto-flow: column;
+          grid-template-columns: none; /* reset mobile 3-col; let desktop flow freely */
           align-items: center;
           justify-content: start;
+        }
+        .controls-top {
+          display: contents; /* unwrap — children flow directly into the desktop row */
         }
       }
 
@@ -252,6 +264,9 @@
         text-transform: uppercase;
         outline: none;
         caret-color: transparent;
+        user-select: none;
+        -webkit-user-select: none;
+        -webkit-touch-callout: none;
       }
       .cell input.letter::selection {
         background: transparent;
@@ -321,9 +336,32 @@
       #startBtn:hover {
         opacity: 0.88;
       }
-      /* pre-start state: show overlay, hide clue content */
-      .clues.pre-start #startOverlay {
-        display: flex;
+      /* pre-start state: show overlay in clues column (desktop only) */
+      @media (min-width: 980px) {
+        .clues.pre-start #startOverlay {
+          display: flex;
+        }
+      }
+
+      /* Mobile start button — sits above the crossword, hidden on desktop */
+      #startBtnMobile {
+        display: none;
+        font-size: 20px;
+        padding: 14px 40px;
+        border-radius: 14px;
+        border: 2px solid var(--accent);
+        background: var(--accent);
+        color: #fff;
+        cursor: pointer;
+        font-weight: 600;
+        order: -2; /* above #status (order -1) and .grid-area (order 0) */
+        margin-bottom: 12px;
+        align-self: center;
+      }
+      #startBtnMobile:hover { opacity: 0.88; }
+      body.pre-start #startBtnMobile { display: block; }
+      @media (min-width: 980px) {
+        #startBtnMobile { display: none !important; }
       }
       .clues.pre-start h2,
       .clues.pre-start .clue-list {
@@ -370,6 +408,41 @@
       .muted {
         color: var(--muted);
       }
+
+      /* Mobile: prominent clue label above the grid */
+      #status {
+        order: -1;
+        margin-top: 0;
+        margin-bottom: 10px;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 9px 14px;
+        background: #eef3ff;
+        border-left: 4px solid var(--accent);
+        border-radius: 0 8px 8px 0;
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--text);
+        line-height: 1.35;
+      }
+      @media (min-width: 980px) {
+        /* Desktop: subtle muted label below the grid */
+        #status {
+          order: 0;
+          margin-top: 8px;
+          margin-bottom: 0;
+          width: auto;
+          padding: 0;
+          background: none;
+          border-left: none;
+          border-radius: 0;
+          font-size: inherit;
+          font-weight: inherit;
+          color: var(--muted);
+          line-height: inherit;
+        }
+      }
+
       .divider {
         width: 100%;
         height: 1px;
@@ -445,19 +518,21 @@
         </div>
 
         <div class="controls">
-          <div class="row">
-            <label for="fileInput" class="btn">Load JSON</label>
-            <input
-              type="file"
-              id="fileInput"
-              accept="application/json"
-              style="display: none"
-            />
+          <div class="controls-top">
+            <div class="row">
+              <label for="fileInput" class="btn">Load JSON</label>
+              <input
+                type="file"
+                id="fileInput"
+                accept="application/json"
+                style="display: none"
+              />
+            </div>
+            <label class="row" title="Pick the puzzle date">
+              <span class="muted">Date:</span>
+              <input type="date" id="datePicker" />
+            </label>
           </div>
-          <label class="row" title="Pick the puzzle date">
-            <span class="muted">Date:</span>
-            <input type="date" id="datePicker" />
-          </label>
 
           <button
             id="clearBtn"
@@ -510,6 +585,7 @@
 
       <main class="main">
         <div class="grid-wrap">
+          <button id="startBtnMobile">Start</button>
           <div class="grid-area">
             <div id="grid" class="grid" aria-label="Crossword grid"></div>
           </div>
@@ -581,6 +657,7 @@
         const fileInputEl = document.getElementById("fileInput");
         const cluesSectionEl = document.getElementById("cluesSection");
         const btnStart = document.getElementById("startBtn");
+        const btnStartMobile = document.getElementById("startBtnMobile");
         const btnClear = document.getElementById("clearBtn");
         const btnCheck = document.getElementById("checkBtn");
         const btnAutoCheck = document.getElementById("autoCheckBtn");
@@ -948,6 +1025,9 @@
                 inp.setAttribute("maxlength", "1");
                 inp.setAttribute("inputmode", "latin");
                 inp.setAttribute("autocomplete", "off");
+                inp.setAttribute("autocapitalize", "none");
+                inp.setAttribute("autocorrect", "off");
+                inp.setAttribute("spellcheck", "false");
                 inp.setAttribute("aria-label", `Row ${r + 1} column ${c + 1}`);
                 inp.dataset.r = r;
                 inp.dataset.c = c;
@@ -986,6 +1066,7 @@
                 // NEW: Spacebar toggles direction — handled here in keydown
                 inp.addEventListener("keydown", (ev) => onKeyDown(ev, r, c));
                 inp.addEventListener("focus", () => selectCell(r, c, false));
+                inp.addEventListener("contextmenu", (ev) => ev.preventDefault());
                 cell.appendChild(inp);
                 rowInputs.push(inp);
 
@@ -1088,7 +1169,7 @@
           const inp = cellInputs[r][c];
           if (inp) {
             inp.focus({ preventScroll: true });
-            inp.setSelectionRange(0, 1);
+            inp.setSelectionRange(0, 0);
           }
           updateHighlights();
           updateActiveClueHighlight();
@@ -1141,7 +1222,9 @@
           );
           if (clueEl) {
             clueEl.classList.add("active");
-            clueEl.scrollIntoView({ block: "nearest", behavior: "smooth" });
+            if (window.matchMedia("(min-width: 980px)").matches) {
+              clueEl.scrollIntoView({ block: "nearest", behavior: "smooth" });
+            }
           }
           if (!puzzleStarted) return;
           const clueText =
@@ -1459,12 +1542,14 @@
         function startPuzzle() {
           puzzleStarted = true;
           cluesSectionEl.classList.remove("pre-start");
+          document.body.classList.remove("pre-start");
           // If there's a paused elapsed time, resume from it rather than starting fresh
           if (timerElapsedAtStop != null) {
             timerStart = Date.now() - timerElapsedAtStop;
             timerElapsedAtStop = null;
           }
           startTimerIfNeeded();
+          updateActiveClueHighlight();
         }
 
         function revealPuzzle() {
@@ -1664,6 +1749,7 @@
               updateTimerDisplay(); // show paused time while waiting for Start
             }
             cluesSectionEl.classList.add("pre-start");
+            document.body.classList.add("pre-start");
             status(""); // hide any clue text below grid
           }
         }
@@ -1707,7 +1793,7 @@
           clearMarks();
           hideFinishMessage();
           resetTimer();
-          status("Cleared entries.");
+          updateActiveClueHighlight();
         }
 
         /* ---------- Wire up controls & events (including new Autocheck) ---------- */
@@ -1749,6 +1835,7 @@
         updateAutoCheckUI();
 
         btnStart.addEventListener("click", startPuzzle);
+        btnStartMobile.addEventListener("click", startPuzzle);
         btnRevealCell.addEventListener("click", revealCell);
         btnRevealWord.addEventListener("click", revealWord);
         btnRevealPuzzle.addEventListener("click", revealPuzzle);
