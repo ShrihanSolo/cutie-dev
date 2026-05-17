@@ -1,5 +1,6 @@
 # 🧩 The Cutie: Your Daily 5×5 Crossword
-By Shrihan Agarwal
+By Shrihan Agarwal, ChatGPT, and Claude
+Logo by VismayaRP
 
 ![Cutie Demo Image](./cross_example.png)
 
