@@ -10,6 +10,7 @@
       href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
       rel="stylesheet"
     />
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
     <style>
       /* ========== Base Layout & Theme ========== */
       :root {
@@ -596,6 +597,7 @@
         let isChecked = false; // whether explicit "Check" applied (not strictly needed)
         let autoCheckEnabled = false; // NEW: autocheck toggle
         let puzzleStarted = false; // true once Start is pressed (or puzzle already in progress)
+        let celebrationFired = false; // true after confetti/jingle plays; reset on new puzzle load
 
         // Timer related
         let timerInterval = null;
@@ -748,16 +750,60 @@
           errorEl.textContent = msg || "";
         }
 
+        function playJingle() {
+          try {
+            const ctx = new (
+              window.AudioContext || window.webkitAudioContext
+            )();
+            [523, 659, 784, 1047].forEach((freq, i) => {
+              const t = ctx.currentTime + i * 0.13;
+              const osc = ctx.createOscillator();
+              const gain = ctx.createGain();
+              osc.connect(gain);
+              gain.connect(ctx.destination);
+              osc.type = "sine";
+              osc.frequency.value = freq;
+              gain.gain.setValueAtTime(0, t);
+              gain.gain.linearRampToValueAtTime(0.35, t + 0.02);
+              gain.gain.linearRampToValueAtTime(0, t + 0.2);
+              osc.start(t);
+              osc.stop(t + 0.2);
+            });
+          } catch (_) {}
+        }
+
+        function triggerCelebration() {
+          if (celebrationFired) return;
+          celebrationFired = true;
+          if (typeof confetti === "function") {
+            [0, 0.2, 0.4, 0.6, 0.8, 1].forEach((x) => {
+              confetti({
+                particleCount: 80,
+                angle: 90,
+                spread: 200,
+                origin: { x, y: 0 },
+                ticks: 400,
+                decay: 0.94,
+              });
+            });
+          }
+          playJingle();
+        }
+
         function showFinishMessage(success) {
           if (success) {
             finishMsgEl.className = "success";
-            const elapsed = timerElapsedAtStop != null
-              ? timerElapsedAtStop
-              : (timerStart ? Date.now() - timerStart : 0);
+            const elapsed =
+              timerElapsedAtStop != null
+                ? timerElapsedAtStop
+                : timerStart
+                  ? Date.now() - timerStart
+                  : 0;
             finishMsgEl.textContent =
               "🎉 Congrats! You completed the Cutie in " +
               formatMs(elapsed) +
               "!";
+            triggerCelebration();
           } else {
             finishMsgEl.className = "fail";
             finishMsgEl.textContent =
@@ -908,7 +954,10 @@
 
                 // Limit multi-char paste; keep only first char
                 inp.addEventListener("beforeinput", (ev) => {
-                  if (!puzzleStarted) { ev.preventDefault(); return; }
+                  if (!puzzleStarted) {
+                    ev.preventDefault();
+                    return;
+                  }
                   if (ev.inputType.startsWith("insert") && ev.data) {
                     ev.preventDefault();
                     const letter = sanitizeLetter(ev.data.slice(-1)); // take last char if paste
@@ -925,7 +974,10 @@
                 });
 
                 inp.addEventListener("input", () => {
-                  if (!puzzleStarted) { inp.value = ""; return; }
+                  if (!puzzleStarted) {
+                    inp.value = "";
+                    return;
+                  }
                   const letter = sanitizeLetter(inp.value);
                   inp.value = letter;
                   typedHandler(r, c, letter);
@@ -1583,6 +1635,7 @@
           puzzleStarted = false; // must be false before renderGrid so loadProgress doesn't start the timer
           timerStart = null;
           timerElapsedAtStop = null;
+          celebrationFired = false;
           if (timerInterval) {
             clearInterval(timerInterval);
             timerInterval = null;
@@ -1705,12 +1758,22 @@
         // behaviour; click events still fire, so all buttons work normally.
         // Carve out real text inputs (date picker, file input) so they can
         // still receive focus when clicked.
-        document.addEventListener("mousedown", (ev) => {
-          const tag = ev.target.tagName;
-          if (tag === "INPUT" || tag === "SELECT" || tag === "TEXTAREA" || ev.target.isContentEditable) return;
-          if (!puzzle || !current) return;
-          ev.preventDefault();
-        }, { passive: false });
+        document.addEventListener(
+          "mousedown",
+          (ev) => {
+            const tag = ev.target.tagName;
+            if (
+              tag === "INPUT" ||
+              tag === "SELECT" ||
+              tag === "TEXTAREA" ||
+              ev.target.isContentEditable
+            )
+              return;
+            if (!puzzle || !current) return;
+            ev.preventDefault();
+          },
+          { passive: false },
+        );
 
         // Load the most recent available puzzle on first open
         loadLatest();
