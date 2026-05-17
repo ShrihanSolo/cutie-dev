@@ -358,10 +358,16 @@
         margin-bottom: 12px;
         align-self: center;
       }
-      #startBtnMobile:hover { opacity: 0.88; }
-      body.pre-start #startBtnMobile { display: block; }
+      #startBtnMobile:hover {
+        opacity: 0.88;
+      }
+      body.pre-start #startBtnMobile {
+        display: block;
+      }
       @media (min-width: 980px) {
-        #startBtnMobile { display: none !important; }
+        #startBtnMobile {
+          display: none !important;
+        }
       }
       .clues.pre-start h2,
       .clues.pre-start .clue-list {
@@ -855,7 +861,7 @@
           if (typeof confetti === "function") {
             [0, 0.2, 0.4, 0.6, 0.8, 1].forEach((x) => {
               confetti({
-                particleCount: 80,
+                particleCount: 200,
                 angle: 90,
                 spread: 200,
                 origin: { x, y: 0 },
@@ -1066,7 +1072,9 @@
                 // NEW: Spacebar toggles direction — handled here in keydown
                 inp.addEventListener("keydown", (ev) => onKeyDown(ev, r, c));
                 inp.addEventListener("focus", () => selectCell(r, c, false));
-                inp.addEventListener("contextmenu", (ev) => ev.preventDefault());
+                inp.addEventListener("contextmenu", (ev) =>
+                  ev.preventDefault(),
+                );
                 cell.appendChild(inp);
                 rowInputs.push(inp);
 
