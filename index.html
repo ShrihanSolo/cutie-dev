@@ -1044,6 +1044,13 @@
                     ev.preventDefault();
                     return;
                   }
+                  // Composition input (insertCompositionText — Samsung
+                  // Keyboard, Gboard with autocorrect) is non-cancelable:
+                  // preventDefault() is a no-op, so handling it here types
+                  // the letter twice — once manually, once when the IME
+                  // commits into the next cell after focus moves. Leave it
+                  // to the "input" listener instead.
+                  if (!ev.cancelable) return;
                   if (ev.inputType.startsWith("insert") && ev.data) {
                     ev.preventDefault();
                     const letter = sanitizeLetter(ev.data.slice(-1)); // take last char if paste
@@ -1064,7 +1071,8 @@
                     inp.value = "";
                     return;
                   }
-                  const letter = sanitizeLetter(inp.value);
+                  // A committed composition can leave >1 char; keep the last
+                  const letter = sanitizeLetter(inp.value.slice(-1));
                   inp.value = letter;
                   typedHandler(r, c, letter);
                 });
