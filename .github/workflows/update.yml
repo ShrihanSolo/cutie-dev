@@ -28,10 +28,10 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install requests beautifulsoup4
+          pip install "requests<3" "beautifulsoup4<5"
 
       - name: Run and retrieve data
-        run: python get_data/convert.py get_data/file.txt
+        run: python get_data/scraper.py
 
       - name: Commit and push results
         run: |
