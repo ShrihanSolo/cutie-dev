@@ -159,6 +159,39 @@ class WriteGuardTests(unittest.TestCase):
             self.assertEqual(json.loads(base64.b64decode(f.read()))["grid"], [["A"]])
 
 
+class ArticleDateTests(unittest.TestCase):
+    """CNET's slug has no year, so an old article can answer for a new date."""
+
+    JSON_LD = '<script type="application/ld+json">{"datePublished": "%sT21:00:00Z"}</script>'
+    OG_META = '<meta property="article:published_time" content="%sT21:00:00Z"/>'
+    TIME_TAG = '<time datetime="%s" class="c-date">whenever</time>'
+
+    def test_accepts_matching_date(self):
+        for name, tmpl in (("json-ld", self.JSON_LD), ("og", self.OG_META), ("time", self.TIME_TAG)):
+            with self.subTest(source=name):
+                self.assertEqual(scraper.check_article_date(tmpl % "2026-08-20", "2026-08-20"),
+                                 "2026-08-20")
+
+    def test_accepts_evening_before_publication(self):
+        """CNET posts the next day's answers the night before."""
+        self.assertEqual(scraper.check_article_date(self.JSON_LD % "2026-08-19", "2026-08-20"),
+                         "2026-08-19")
+
+    def test_rejects_previous_year(self):
+        """The failure this guard exists for: thursday-aug-21 is 2025's puzzle."""
+        with self.assertRaises(RuntimeError) as ctx:
+            scraper.check_article_date(self.JSON_LD % "2025-08-21", "2026-08-21")
+        self.assertIn("different year", str(ctx.exception))
+
+    def test_passes_when_any_advertised_date_matches(self):
+        """Pages embed dates for related articles; one good match is enough."""
+        html = (self.JSON_LD % "2024-01-01") + (self.OG_META % "2026-08-20")
+        self.assertEqual(scraper.check_article_date(html, "2026-08-20"), "2026-08-20")
+
+    def test_returns_none_when_page_has_no_date(self):
+        self.assertIsNone(scraper.check_article_date("<html><p>nothing</p></html>", "2026-08-20"))
+
+
 class ExitCodeTests(unittest.TestCase):
     """The workflow relies on these to go red instead of quietly no-opping."""
 

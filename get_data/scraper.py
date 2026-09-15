@@ -216,6 +216,67 @@ def solve_crossword(across_dict: Dict[str, str], down_dict: Dict[str, str],
 
 
 # ============================================================
+#  Article date verification
+# ============================================================
+
+# CNET's URL carries no year ("...-for-friday-aug-21/"), and old articles stay
+# live forever. A date's weekday shifts by one each year, so when CNET has not
+# published the year we want, the same slug can resolve to a PREVIOUS year's
+# puzzle -- a 200 with entirely wrong answers. Cross-check the page's own
+# publication date before trusting it.
+
+_DATE_META_PATTERNS = (
+    re.compile(r'"date(?:Published|Modified)"\s*:\s*"(\d{4}-\d{2}-\d{2})', re.I),
+    re.compile(r'article:(?:published|modified)_time"[^>]*content="(\d{4}-\d{2}-\d{2})', re.I),
+    re.compile(r'content="(\d{4}-\d{2}-\d{2})[^"]*"[^>]*property="article:(?:published|modified)_time', re.I),
+    re.compile(r'<time[^>]*datetime="(\d{4}-\d{2}-\d{2})', re.I),
+)
+
+# CNET publishes the next day's answers the evening before, so the article date
+# legitimately trails the puzzle date. A wrong-year article is off by ~365 days,
+# leaving enormous margin.
+_DATE_TOLERANCE_DAYS = 2
+
+
+def article_dates(html: str) -> List[str]:
+    """Every publication-ish date (YYYY-MM-DD) the page advertises, in order."""
+    found: List[str] = []
+    for pattern in _DATE_META_PATTERNS:
+        for match in pattern.findall(html):
+            if match not in found:
+                found.append(match)
+    return found
+
+
+def check_article_date(html: str, date: str) -> Optional[str]:
+    """
+    Verify the page belongs to `date`.
+
+    Returns None when the page carries no usable date (nothing is claimed, so
+    nothing is checked), otherwise the matching date. Raises RuntimeError when
+    the page advertises dates and none of them is close to the one requested.
+    """
+    wanted = datetime.datetime.strptime(date, "%Y-%m-%d")
+    candidates = article_dates(html)
+    if not candidates:
+        return None
+
+    for candidate in candidates:
+        try:
+            delta = (datetime.datetime.strptime(candidate, "%Y-%m-%d") - wanted).days
+        except ValueError:
+            continue
+        if abs(delta) <= _DATE_TOLERANCE_DAYS:
+            return candidate
+
+    raise RuntimeError(
+        f"Page for {date} advertises {', '.join(candidates[:3])} -- CNET's slug "
+        f"carries no year, so this is almost certainly a different year's puzzle. "
+        f"Refusing it."
+    )
+
+
+# ============================================================
 #  Clue paragraph parsing
 # ============================================================
 
@@ -294,6 +355,10 @@ def fetch_crossword(date: str) -> Dict:
     response = requests.get(url)
     if response.status_code != 200:
         raise RuntimeError(f"Failed to fetch {url} (status {response.status_code})")
+
+    # Guard against landing on a previous year's article (see above).
+    if check_article_date(response.text, date) is None:
+        print(f"ℹ️  {date}: page carries no publication date; year check skipped")
 
     soup = BeautifulSoup(response.text, "html.parser")
 
