@@ -330,6 +330,11 @@ def parse_clue_paragraph(full_text: str) -> Optional[Tuple[str, str, str, str]]:
 #  Scraper for one crossword
 # ============================================================
 
+# First date that uses the new year-bearing slug. Every date from 2026-10-28 on failed under
+# the old slug; 2026-10-27 still worked under it.
+NEW_SLUG_FROM = datetime.datetime(2026, 10, 28)
+
+
 def fetch_crossword(date: str) -> Dict:
     """
     Fetch crossword data for a given date, reconstruct the grid,
@@ -349,7 +354,14 @@ def fetch_crossword(date: str) -> Dict:
         if month == "sep":
             month = "sept"
 
-    url = f"https://www.cnet.com/tech/gaming/todays-nyt-mini-crossword-answers-for-{day_of_week}-{month}-{day}/"
+    if date_obj >= NEW_SLUG_FROM:
+        # From late Oct 2026 CNET's slug carries the full month and the year, e.g.
+        # todays-nyt-mini-crossword-answers-november-3-2026/. The year makes it unambiguous.
+        full_month = date_obj.strftime("%B").lower()
+        url = (f"https://www.cnet.com/tech/gaming/todays-nyt-mini-crossword-answers-"
+               f"{full_month}-{day}-{date_obj.year}/")
+    else:
+        url = f"https://www.cnet.com/tech/gaming/todays-nyt-mini-crossword-answers-for-{day_of_week}-{month}-{day}/"
 
     # --- Fetch page ---
     response = requests.get(url)
